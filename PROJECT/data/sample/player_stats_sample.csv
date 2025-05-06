@@ -1,0 +1,11 @@
+player_id,first_name,last_name,team,position,games_played,minutes,goals,assists,shots,shots_on_goal,yellow_cards,red_cards,fouls_committed,fouls_suffered
+DII001,John,Smith,Western State,F,20,1750,12,8,45,30,2,0,15,25
+DII002,Maria,Garcia,Eastern College,MF,18,1620,5,10,25,15,3,0,18,20
+DII003,David,Johnson,Northern University,D,19,1710,1,3,10,5,4,1,22,8
+DII004,Sarah,Williams,Southern Institute,GK,20,1800,0,0,0,0,1,0,2,0
+DII005,Michael,Brown,Midwest College,F,17,1450,15,4,50,32,2,0,12,30
+DII006,Jennifer,Martinez,Coastal University,MF,20,1800,7,12,30,18,1,0,14,28
+DII007,Robert,Anderson,Mountain State,D,16,1440,0,2,8,3,5,0,25,7
+DII008,Christopher,Taylor,Valley College,F,18,1550,10,6,40,22,3,0,16,22
+DII009,Jessica,Thomas,Lake University,MF,19,1700,4,8,20,12,2,0,15,18
+DII010,Daniel,Jackson,River State,GK,20,1800,0,1,0,0,0,0,1,0
