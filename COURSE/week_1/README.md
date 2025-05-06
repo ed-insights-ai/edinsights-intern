@@ -1,14 +1,14 @@
-# Week 1: Python Fundamentals
+# Week 1: Python Fundamentals for Soccer Analytics
 
 ## Learning Objectives
 - Understand basic Python syntax and data types
-- Learn control structures (if/else, loops)
+- Master control structures (if/else, loops)
 - Work with functions and modules
 - Use Python's built-in data structures (lists, dictionaries, tuples, sets)
-- Write and run simple Python scripts
+- Apply Python concepts to soccer data analysis problems
 
 ## Required Course Videos
-Complete the following course videos before starting this week's assignments:
+Complete the following course videos before starting this week's challenges:
 
 1. **Day 1: Working with Variables in Python to Manage Data** (1hr 12min)
    - Basic variable assignment and data types
@@ -34,45 +34,81 @@ Complete the following course videos before starting this week's assignments:
    - Function definition and calling
    - Parameters and return values
 
-## Assignments
+## Coding Challenges
 
-### 1. Python Basics Exercise
-- Complete the exercises in `python_basics.py`
-- Practice with variables, operators, and data types
-- Submit with your solutions implemented
+Each challenge has its own README with guidance and hints. Don't peek at the solutions - try to solve them yourself first!
 
-### 2. Control Flow Challenge
-- Implement the missing code in `control_flow.py`
-- Practice with conditionals and loops
-- Make all tests pass
+### Challenge 1: Soccer Stats Fundamentals
+- File: `python_basics.py`
+- README: `challenges/python_basics_README.md`
+- Practice with variables, operators, and data types in a soccer context
+- Focus on basic calculations and string operations used in soccer analytics
 
-### 3. Data Structures Practice
-- Complete the functions in `data_structures.py`
-- Demonstrate understanding of Python's data structures
-- Ensure all operations are efficient
+### Challenge 2: Game Flow Control
+- File: `control_flow.py`
+- README: `challenges/control_flow_README.md`
+- Implement conditionals and loops to model soccer match scenarios
+- Create logic to analyze soccer match events and patterns
 
-### 4. Function Workshop
-- Implement the functions described in `functions.py`
-- Focus on proper parameter handling and return values
-- Add docstrings to document your functions
+### Challenge 3: Soccer Data Structures
+- File: `data_structures.py`
+- README: `challenges/data_structures_README.md`
+- Master Python's data structures for organizing soccer data
+- Implement operations for finding, filtering, and grouping player and match data
+
+### Challenge 4: Soccer Analytics Functions
+- File: `functions.py`
+- README: `challenges/functions_README.md`
+- Build powerful functions for soccer data processing and analysis
+- Create reusable components for your soccer analytics toolkit
 
 ## Project Milestone: Data Collection Planning
 
 In the `PROJECT/` directory, create a document outlining:
+
 1. What data you'll need to collect for NCAA soccer player analysis
+   - Player demographics (age, height, weight, etc.)
+   - Performance statistics (goals, assists, shots, etc.)
+   - Game context data (home/away, opponents, etc.)
+   - Team statistics
+
 2. Potential sources for this data
+   - NCAA official statistics websites
+   - School athletic department websites
+   - Sports data APIs and services
+   - Public datasets
+
 3. Key metrics and statistics to track
+   - Primary metrics (goals, assists, minutes played)
+   - Advanced metrics (expected goals, pass completion %, etc.)
+   - Performance indicators specific to positions
+   - Contextual performance factors
+
 4. Initial thoughts on data storage format
+   - File formats (CSV, JSON, database)
+   - Data organization and relationships
+   - Update frequency considerations
+   - Scalability needs
 
 Save this as `data_collection_plan.md` in your personal project folder.
 
-> **🌟 CAPSTONE TIP:** The data collection plan you create this week will form the foundation of your capstone project's data strategy. Pay special attention to identifying comprehensive data sources and metrics that will allow for meaningful analysis. Strong data foundations make for powerful capstone projects!
+> **🌟 CAPSTONE TIP:** The coding challenges this week are directly related to the skills you'll need for your capstone project. As you work through them, think about how each function or concept could be applied to NCAA soccer data analysis. The stronger your Python foundation, the more sophisticated your capstone analytics system will be!
+
+## How to Approach This Week
+
+1. Watch the required videos to understand the concepts
+2. Read each challenge README for guidance before attempting the exercises
+3. Complete the coding challenges one by one
+4. Apply what you've learned to create your data collection plan
+5. Commit and push your solutions following the standard pull request process
 
 ## Resources
 - [Python Official Tutorial](https://docs.python.org/3/tutorial/)
 - [Python Data Structures](https://docs.python.org/3/tutorial/datastructures.html)
 - [W3Schools Python Tutorial](https://www.w3schools.com/python/)
 - [Real Python - Python Basics](https://realpython.com/python-basics/)
+- [Soccer Statistics Glossary](https://fbref.com/en/glossary/)
+- [Soccer Analytics Introduction](https://soccermatics.readthedocs.io/en/latest/)
 
 ## Submission
 Submit your completed work following the standard pull request process described in the Getting Started guide.

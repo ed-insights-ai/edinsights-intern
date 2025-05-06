@@ -1,153 +1,196 @@
 """
-Function Workshop
----------------
+Function Workshop: Soccer Analytics
+----------------------------------
 Complete the following functions according to their docstrings.
-This exercise focuses on creating and using functions in Python.
-Be sure to add appropriate docstrings to document your functions.
+This exercise focuses on creating and using functions in Python
+while introducing you to soccer analytics concepts.
 """
 
-def multiply(a, b):
+def calculate_win_percentage(wins, draws, losses):
     """
-    Multiply two numbers and return the result.
+    Calculate the win percentage for a soccer team.
+    
+    The formula is: (wins + draws * 0.5) / total_matches * 100
     
     Args:
-        a (number): First number
-        b (number): Second number
+        wins (int): Number of wins
+        draws (int): Number of draws
+        losses (int): Number of losses
         
     Returns:
-        number: The product of a and b
+        float: The win percentage (0-100)
         
     Example:
-        >>> multiply(3, 4)
-        12
+        >>> calculate_win_percentage(10, 5, 5)
+        62.5  # (10 + 5*0.5) / 20 * 100
     """
     # YOUR CODE HERE
     pass
 
-def greet_user(name, greeting="Hello"):
+def format_player_info(first_name, last_name, position, team=None, jersey_number=None):
     """
-    Generate a greeting message for a user.
+    Format player information into a standard string representation.
     
     Args:
-        name (str): The name of the user
-        greeting (str, optional): The greeting to use. Defaults to "Hello"
+        first_name (str): Player's first name
+        last_name (str): Player's last name
+        position (str): Player's position
+        team (str, optional): Player's team. Defaults to None.
+        jersey_number (int, optional): Player's jersey number. Defaults to None.
         
     Returns:
-        str: The complete greeting message
+        str: Formatted player information
         
     Example:
-        >>> greet_user("Alice")
-        'Hello, Alice!'
-        >>> greet_user("Bob", "Hi")
-        'Hi, Bob!'
+        >>> format_player_info("Lionel", "Messi", "Forward", "Inter Miami", 10)
+        "Lionel Messi (Forward, #10) - Inter Miami"
+        >>> format_player_info("Cristiano", "Ronaldo", "Forward")
+        "Cristiano Ronaldo (Forward)"
     """
     # YOUR CODE HERE
     pass
 
-def calculate_area(shape, **kwargs):
+def calculate_points(*match_results):
     """
-    Calculate the area of different shapes based on the provided parameters.
+    Calculate total points earned from a series of match results.
     
-    Supported shapes:
-    - "rectangle": requires 'width' and 'height' parameters
-    - "circle": requires 'radius' parameter
-    - "triangle": requires 'base' and 'height' parameters
+    In soccer, a win is worth 3 points, a draw is worth 1 point,
+    and a loss is worth 0 points.
     
     Args:
-        shape (str): The type of shape ("rectangle", "circle", or "triangle")
-        **kwargs: Keyword arguments for shape dimensions
-            - For rectangle: width, height
-            - For circle: radius
-            - For triangle: base, height
-            
+        *match_results: Variable number of match results ('W', 'D', or 'L')
+        
     Returns:
-        float: The calculated area or None if invalid parameters
+        int: Total points earned
         
     Example:
-        >>> calculate_area("rectangle", width=5, height=3)
-        15.0
-        >>> calculate_area("circle", radius=2)
-        12.566370614359172
-        >>> calculate_area("triangle", base=4, height=6)
-        12.0
+        >>> calculate_points('W', 'D', 'W', 'L', 'D')
+        8  # 3 + 1 + 3 + 0 + 1
     """
     # YOUR CODE HERE
     pass
 
-def fibonacci(n):
+def analyze_match_stats(team_stats, opponent_stats):
     """
-    Return the nth number in the Fibonacci sequence.
-    The Fibonacci sequence starts with 0 and 1, and each subsequent number
-    is the sum of the two preceding ones.
+    Analyze match statistics and determine areas of strength and weakness.
     
     Args:
-        n (int): The position in the Fibonacci sequence (0-indexed)
+        team_stats (dict): Dictionary containing team statistics
+        opponent_stats (dict): Dictionary containing opponent statistics
         
     Returns:
-        int: The Fibonacci number at position n
+        dict: Dictionary containing analysis results with the following keys:
+            - 'possession_difference': Difference in possession percentage
+            - 'shots_accuracy': Team's shots on target as a percentage of total shots
+            - 'passing_accuracy': Team's completed passes as a percentage of total passes
+            - 'strengths': List of areas where team outperformed opponent
+            - 'weaknesses': List of areas where opponent outperformed team
         
     Example:
-        >>> fibonacci(0)
-        0
-        >>> fibonacci(1)
-        1
-        >>> fibonacci(6)
-        8
+        >>> team_stats = {
+        ...     'possession': 60,
+        ...     'shots': 15,
+        ...     'shots_on_target': 7,
+        ...     'passes': 500,
+        ...     'passes_completed': 450,
+        ...     'corners': 7,
+        ...     'fouls': 10
+        ... }
+        >>> opponent_stats = {
+        ...     'possession': 40,
+        ...     'shots': 10,
+        ...     'shots_on_target': 3,
+        ...     'passes': 300,
+        ...     'passes_completed': 250,
+        ...     'corners': 3,
+        ...     'fouls': 15
+        ... }
+        >>> analyze_match_stats(team_stats, opponent_stats)
+        {
+            'possession_difference': 20,
+            'shots_accuracy': 46.67,
+            'passing_accuracy': 90.0,
+            'strengths': ['possession', 'shots', 'shots_on_target', 'passes', 'passes_completed', 'corners'],
+            'weaknesses': ['fouls']
+        }
     """
     # YOUR CODE HERE
     pass
 
-def validate_email(email):
+def generate_league_table(team_results):
     """
-    Validate if the provided string is a proper email address.
-    
-    A simple validation that checks:
-    1. Contains exactly one '@' character
-    2. Has at least one character before the '@'
-    3. Has at least one '.' after the '@'
-    4. Has at least one character between '@' and '.'
-    5. Has at least one character after the last '.'
+    Generate a league table (standings) from team results.
     
     Args:
-        email (str): The email address to validate
+        team_results (dict): Dictionary where keys are team names and values are lists
+                             of match results ('W', 'D', or 'L')
         
     Returns:
-        bool: True if the email is valid, False otherwise
+        list: List of dictionaries, each containing the following keys:
+            - 'team': Team name
+            - 'played': Number of matches played
+            - 'won': Number of matches won
+            - 'drawn': Number of matches drawn
+            - 'lost': Number of matches lost
+            - 'points': Total points earned
+        The list should be sorted by points in descending order.
         
     Example:
-        >>> validate_email("user@example.com")
-        True
-        >>> validate_email("invalid@")
-        False
-        >>> validate_email("user@.com")
-        False
+        >>> team_results = {
+        ...     'Team A': ['W', 'W', 'D', 'L', 'W'],
+        ...     'Team B': ['L', 'W', 'D', 'W', 'D'],
+        ...     'Team C': ['D', 'L', 'L', 'D', 'L']
+        ... }
+        >>> generate_league_table(team_results)
+        [
+            {'team': 'Team A', 'played': 5, 'won': 3, 'drawn': 1, 'lost': 1, 'points': 10},
+            {'team': 'Team B', 'played': 5, 'won': 2, 'drawn': 2, 'lost': 1, 'points': 8},
+            {'team': 'Team C', 'played': 5, 'won': 0, 'drawn': 2, 'lost': 3, 'points': 2}
+        ]
     """
     # YOUR CODE HERE
     pass
 
 def main():
     """Run some examples to test your functions."""
-    print("Testing multiply...")
-    print(f"multiply(3, 4) = {multiply(3, 4)}")
+    print("Testing calculate_win_percentage...")
+    print(f"calculate_win_percentage(10, 5, 5) = {calculate_win_percentage(10, 5, 5)}")
     
-    print("\nTesting greet_user...")
-    print(f"greet_user('Alice') = {greet_user('Alice')}")
-    print(f"greet_user('Bob', 'Hi') = {greet_user('Bob', 'Hi')}")
+    print("\nTesting format_player_info...")
+    print(f"format_player_info('Lionel', 'Messi', 'Forward', 'Inter Miami', 10) = {format_player_info('Lionel', 'Messi', 'Forward', 'Inter Miami', 10)}")
+    print(f"format_player_info('Cristiano', 'Ronaldo', 'Forward') = {format_player_info('Cristiano', 'Ronaldo', 'Forward')}")
     
-    print("\nTesting calculate_area...")
-    print(f"calculate_area('rectangle', width=5, height=3) = {calculate_area('rectangle', width=5, height=3)}")
-    print(f"calculate_area('circle', radius=2) = {calculate_area('circle', radius=2)}")
-    print(f"calculate_area('triangle', base=4, height=6) = {calculate_area('triangle', base=4, height=6)}")
+    print("\nTesting calculate_points...")
+    print(f"calculate_points('W', 'D', 'W', 'L', 'D') = {calculate_points('W', 'D', 'W', 'L', 'D')}")
     
-    print("\nTesting fibonacci...")
-    print(f"fibonacci(0) = {fibonacci(0)}")
-    print(f"fibonacci(1) = {fibonacci(1)}")
-    print(f"fibonacci(6) = {fibonacci(6)}")
+    print("\nTesting analyze_match_stats...")
+    team_stats = {
+        'possession': 60,
+        'shots': 15,
+        'shots_on_target': 7,
+        'passes': 500,
+        'passes_completed': 450,
+        'corners': 7,
+        'fouls': 10
+    }
+    opponent_stats = {
+        'possession': 40,
+        'shots': 10,
+        'shots_on_target': 3,
+        'passes': 300,
+        'passes_completed': 250,
+        'corners': 3,
+        'fouls': 15
+    }
+    print(f"analyze_match_stats(team_stats, opponent_stats) = {analyze_match_stats(team_stats, opponent_stats)}")
     
-    print("\nTesting validate_email...")
-    print(f"validate_email('user@example.com') = {validate_email('user@example.com')}")
-    print(f"validate_email('invalid@') = {validate_email('invalid@')}")
-    print(f"validate_email('user@.com') = {validate_email('user@.com')}")
+    print("\nTesting generate_league_table...")
+    team_results = {
+        'Team A': ['W', 'W', 'D', 'L', 'W'],
+        'Team B': ['L', 'W', 'D', 'W', 'D'],
+        'Team C': ['D', 'L', 'L', 'D', 'L']
+    }
+    print(f"generate_league_table(team_results) = {generate_league_table(team_results)}")
 
 if __name__ == "__main__":
     main()

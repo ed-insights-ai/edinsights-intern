@@ -1,120 +1,169 @@
 """
-Data Structures Practice
------------------------
+Data Structures Practice: Soccer Analytics
+-----------------------------------------
 Complete the following functions according to their docstrings.
-This exercise focuses on Python's built-in data structures: lists, dictionaries, sets, and tuples.
+This exercise focuses on Python's built-in data structures: lists, dictionaries, sets, and tuples
+while introducing you to soccer data analytics concepts.
 """
 
-def unique_elements(input_list):
+def unique_goal_scorers(match_report):
     """
-    Return a list of unique elements from the input list while preserving order.
+    Extract a list of unique goal scorers from a match report while preserving the order.
     
     Args:
-        input_list (list): A list of elements that may contain duplicates
+        match_report (list): A list of goal scorer names, which may contain duplicates
+                           for players who scored multiple goals
         
     Returns:
-        list: A list of unique elements in the order they first appeared
+        list: A list of unique goal scorers in the order they first scored
         
     Example:
-        >>> unique_elements([1, 2, 3, 1, 2, 4])
-        [1, 2, 3, 4]
+        >>> unique_goal_scorers(['Messi', 'Ronaldo', 'Messi', 'Neymar', 'Ronaldo'])
+        ['Messi', 'Ronaldo', 'Neymar']
     """
     # YOUR CODE HERE
     pass
 
-def merge_dictionaries(dict1, dict2):
+def merge_player_stats(season1_stats, season2_stats):
     """
-    Merge two dictionaries. If there are duplicate keys, use the value from dict2.
+    Merge player statistics from two different seasons. 
+    If a player appears in both seasons, use the most recent (season2) statistics.
     
     Args:
-        dict1 (dict): First dictionary
-        dict2 (dict): Second dictionary
+        season1_stats (dict): Player statistics from season 1
+        season2_stats (dict): Player statistics from season 2
         
     Returns:
-        dict: Merged dictionary with values from dict2 taking precedence for duplicate keys
+        dict: Merged player statistics with season2 taking precedence for players in both seasons
         
     Example:
-        >>> merge_dictionaries({'a': 1, 'b': 2}, {'b': 3, 'c': 4})
-        {'a': 1, 'b': 3, 'c': 4}
+        >>> merge_player_stats(
+        ...     {'Messi': {'goals': 30, 'assists': 10}}, 
+        ...     {'Messi': {'goals': 25, 'assists': 15}, 'Ronaldo': {'goals': 28, 'assists': 5}}
+        ... )
+        {'Messi': {'goals': 25, 'assists': 15}, 'Ronaldo': {'goals': 28, 'assists': 5}}
     """
     # YOUR CODE HERE
     pass
 
-def find_most_frequent(items):
+def find_top_scorer(match_goals):
     """
-    Find the most frequently occurring item in a list.
-    If there are multiple items with the same highest frequency, return any one of them.
+    Find the player who scored the most goals in a series of matches.
+    If multiple players have the same highest number of goals, return any one of them.
     
     Args:
-        items (list): A list of items
+        match_goals (list): A list of goal scorers across multiple matches
         
     Returns:
-        The item that appears most frequently in the list
+        str: The name of the top goal scorer
         
     Example:
-        >>> find_most_frequent([1, 2, 3, 2, 1, 2, 4, 5])
-        2
+        >>> find_top_scorer(['Messi', 'Ronaldo', 'Messi', 'Neymar', 'Ronaldo', 'Messi'])
+        'Messi'
     """
     # YOUR CODE HERE
     pass
 
-def group_by_key(records, key):
+def group_players_by_position(players, position_key):
     """
-    Group a list of dictionaries by a specified key.
+    Group a list of player dictionaries by their position.
     
     Args:
-        records (list): A list of dictionaries
-        key (str): The key to group by
+        players (list): A list of player dictionaries
+        position_key (str): The key in each dictionary that specifies the player's position
         
     Returns:
-        dict: A dictionary where keys are the unique values of the specified key,
-              and values are lists of records with that key value
+        dict: A dictionary where keys are positions and values are lists of players with that position
         
     Example:
-        >>> records = [{'name': 'Alice', 'age': 25}, {'name': 'Bob', 'age': 30}, 
-                       {'name': 'Charlie', 'age': 25}]
-        >>> group_by_key(records, 'age')
-        {25: [{'name': 'Alice', 'age': 25}, {'name': 'Charlie', 'age': 25}], 
-         30: [{'name': 'Bob', 'age': 30}]}
+        >>> players = [
+        ...     {'name': 'Alisson', 'position': 'Goalkeeper'}, 
+        ...     {'name': 'Van Dijk', 'position': 'Defender'},
+        ...     {'name': 'Salah', 'position': 'Forward'},
+        ...     {'name': 'Robertson', 'position': 'Defender'}
+        ... ]
+        >>> group_players_by_position(players, 'position')
+        {
+            'Goalkeeper': [{'name': 'Alisson', 'position': 'Goalkeeper'}],
+            'Defender': [
+                {'name': 'Van Dijk', 'position': 'Defender'}, 
+                {'name': 'Robertson', 'position': 'Defender'}
+            ],
+            'Forward': [{'name': 'Salah', 'position': 'Forward'}]
+        }
     """
     # YOUR CODE HERE
     pass
 
-def nested_sum(nested_list):
+def total_tournament_goals(tournament_data):
     """
-    Calculate the sum of all numbers in a nested list structure.
-    The list may contain non-numeric elements that should be skipped.
+    Calculate the total number of goals across all divisions and matches in a tournament.
+    The tournament data structure may contain nested lists and dictionaries.
     
     Args:
-        nested_list (list): A list that may contain nested lists, numbers, and other elements
+        tournament_data (list): A nested structure of tournament data
+                              [division, [match, goals], ...]
         
     Returns:
-        float: The sum of all numbers in the nested structure
+        int: The total number of goals in the tournament
         
     Example:
-        >>> nested_sum([1, [2, 3], [4, [5, 6]], 'a', {'b': 7}])
-        21
+        >>> tournament_data = [
+        ...     'Division 1', 
+        ...     [
+        ...         ['Match 1', 3],
+        ...         ['Match 2', 2]
+        ...     ],
+        ...     'Division 2',
+        ...     [
+        ...         ['Match 1', 1],
+        ...         ['Match 2', 4],
+        ...         ['Match 3', 2]
+        ...     ]
+        ... ]
+        >>> total_tournament_goals(tournament_data)
+        12
     """
     # YOUR CODE HERE
     pass
 
 def main():
     """Run some examples to test your functions."""
-    print("Testing unique_elements...")
-    print(f"unique_elements([1, 2, 3, 1, 2, 4]) = {unique_elements([1, 2, 3, 1, 2, 4])}")
+    print("Testing unique_goal_scorers...")
+    print(f"unique_goal_scorers(['Messi', 'Ronaldo', 'Messi', 'Neymar', 'Ronaldo']) = {unique_goal_scorers(['Messi', 'Ronaldo', 'Messi', 'Neymar', 'Ronaldo'])}")
     
-    print("\nTesting merge_dictionaries...")
-    print(f"merge_dictionaries({{'a': 1, 'b': 2}}, {{'b': 3, 'c': 4}}) = {merge_dictionaries({'a': 1, 'b': 2}, {'b': 3, 'c': 4})}")
+    print("\nTesting merge_player_stats...")
+    season1 = {'Messi': {'goals': 30, 'assists': 10}}
+    season2 = {'Messi': {'goals': 25, 'assists': 15}, 'Ronaldo': {'goals': 28, 'assists': 5}}
+    print(f"merge_player_stats(season1, season2) = {merge_player_stats(season1, season2)}")
     
-    print("\nTesting find_most_frequent...")
-    print(f"find_most_frequent([1, 2, 3, 2, 1, 2, 4, 5]) = {find_most_frequent([1, 2, 3, 2, 1, 2, 4, 5])}")
+    print("\nTesting find_top_scorer...")
+    print(f"find_top_scorer(['Messi', 'Ronaldo', 'Messi', 'Neymar', 'Ronaldo', 'Messi']) = {find_top_scorer(['Messi', 'Ronaldo', 'Messi', 'Neymar', 'Ronaldo', 'Messi'])}")
     
-    print("\nTesting group_by_key...")
-    records = [{'name': 'Alice', 'age': 25}, {'name': 'Bob', 'age': 30}, {'name': 'Charlie', 'age': 25}]
-    print(f"group_by_key(records, 'age') = {group_by_key(records, 'age')}")
+    print("\nTesting group_players_by_position...")
+    players = [
+        {'name': 'Alisson', 'position': 'Goalkeeper'}, 
+        {'name': 'Van Dijk', 'position': 'Defender'},
+        {'name': 'Salah', 'position': 'Forward'},
+        {'name': 'Robertson', 'position': 'Defender'}
+    ]
+    print(f"group_players_by_position(players, 'position') = {group_players_by_position(players, 'position')}")
     
-    print("\nTesting nested_sum...")
-    print(f"nested_sum([1, [2, 3], [4, [5, 6]], 'a', {{'b': 7}}]) = {nested_sum([1, [2, 3], [4, [5, 6]], 'a', {'b': 7}])}")
+    print("\nTesting total_tournament_goals...")
+    tournament_data = [
+        'Division 1', 
+        [
+            ['Match 1', 3],
+            ['Match 2', 2]
+        ],
+        'Division 2',
+        [
+            ['Match 1', 1],
+            ['Match 2', 4],
+            ['Match 3', 2]
+        ]
+    ]
+    print(f"total_tournament_goals(tournament_data) = {total_tournament_goals(tournament_data)}")
 
 if __name__ == "__main__":
     main()
