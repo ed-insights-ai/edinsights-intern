@@ -1,208 +1,141 @@
 """
-Web Scraper Development
---------------------
-Create a web scraper to extract soccer statistics from a demo website.
-This exercise focuses on using Beautiful Soup to parse HTML and extract structured data.
+CHALLENGE: NCAA Soccer Web Scraper
+
+Your task is to build a web scraper that extracts soccer player and team statistics 
+from a demo NCAA soccer statistics website.
+
+The scraper should:
+1. Fetch the web page content
+2. Parse the HTML structure
+3. Extract player statistics (name, position, goals, assists, etc.)
+4. Extract team statistics (wins, losses, etc.)
+5. Store the data in appropriate Python data structures
+6. Save the extracted data as CSV files
+
+REQUIREMENTS:
+- Use the requests library to fetch web content
+- Use Beautiful Soup to parse HTML and extract data
+- Implement error handling for HTTP requests
+- Create functions to extract different types of data
+- Store extracted data in CSV format
+- Add proper documentation and comments
 """
 
 import requests
 from bs4 import BeautifulSoup
 import csv
-import json
 import os
-import logging
-import time
-import random
+from typing import List, Dict, Any, Optional
 
-# Set up logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[logging.FileHandler("scraper.log"), logging.StreamHandler()]
-)
-logger = logging.getLogger(__name__)
 
-class SoccerStatsScraper:
+def fetch_webpage(url: str) -> Optional[str]:
     """
-    A web scraper for extracting soccer statistics from a demo website.
+    Fetch the content of a web page.
     
-    Attributes:
-        base_url (str): The base URL of the website to scrape
-        headers (dict): HTTP headers to use in requests
-        delay (tuple): Range of seconds to delay between requests (min, max)
+    Args:
+        url: The URL of the webpage to fetch
         
-    Methods:
-        get_teams: Get a list of all teams
-        get_players: Get a list of all players
-        get_player_stats: Get detailed statistics for a player
-        get_team_stats: Get detailed statistics for a team
-        scrape_all_data: Scrape all data and save to files
+    Returns:
+        The HTML content of the page as a string, or None if the request failed
     """
+    # TODO: Implement this function to fetch the webpage content
+    # Remember to:
+    # - Add proper user-agent headers
+    # - Implement error handling
+    # - Add appropriate delays to be respectful to the website
+    pass
+
+
+def parse_html(html_content: str) -> BeautifulSoup:
+    """
+    Parse HTML content using Beautiful Soup.
     
-    def __init__(self, base_url, delay=(1, 3)):
-        """
-        Initialize the SoccerStatsScraper.
+    Args:
+        html_content: The HTML content to parse
         
-        Args:
-            base_url (str): The base URL of the website to scrape
-            delay (tuple, optional): Range of seconds to delay between requests. Defaults to (1, 3).
-        """
-        self.base_url = base_url
-        # Set a user agent to mimic a browser
-        self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
-        self.delay = delay
+    Returns:
+        A BeautifulSoup object representing the parsed HTML
+    """
+    # TODO: Implement this function to parse the HTML content
+    pass
+
+
+def extract_player_stats(soup: BeautifulSoup) -> List[Dict[str, Any]]:
+    """
+    Extract player statistics from the parsed HTML.
     
-    def _make_request(self, url):
-        """
-        Make an HTTP request with error handling and random delay.
+    Args:
+        soup: The BeautifulSoup object containing the parsed HTML
         
-        Args:
-            url (str): URL to request
-            
-        Returns:
-            requests.Response: Response object or None if failed
-        """
-        # YOUR CODE HERE
-        pass
+    Returns:
+        A list of dictionaries containing player statistics
+    """
+    # TODO: Implement this function to extract player statistics
+    # Each player should be represented as a dictionary with keys such as:
+    # - player_name
+    # - position
+    # - goals
+    # - assists
+    # - shots
+    # - shots_on_goal
+    # - etc.
+    pass
+
+
+def extract_team_stats(soup: BeautifulSoup) -> Dict[str, Any]:
+    """
+    Extract team statistics from the parsed HTML.
     
-    def _parse_html(self, response):
-        """
-        Parse HTML from a response using Beautiful Soup.
+    Args:
+        soup: The BeautifulSoup object containing the parsed HTML
         
-        Args:
-            response (requests.Response): Response object
-            
-        Returns:
-            BeautifulSoup: Parsed HTML
-        """
-        # YOUR CODE HERE
-        pass
+    Returns:
+        A dictionary containing team statistics
+    """
+    # TODO: Implement this function to extract team statistics
+    # The team statistics should be represented as a dictionary with keys such as:
+    # - team_name
+    # - wins
+    # - losses
+    # - ties
+    # - goals_for
+    # - goals_against
+    # - etc.
+    pass
+
+
+def save_to_csv(data: List[Dict[str, Any]], filename: str) -> None:
+    """
+    Save data to a CSV file.
     
-    def get_teams(self):
-        """
-        Get a list of all teams from the website.
-        
-        Returns:
-            list: List of dictionaries with team information
-                Each dictionary contains: id, name, location, conference
-        """
-        # YOUR CODE HERE
-        pass
-    
-    def get_players(self, team_id=None):
-        """
-        Get a list of all players, optionally filtered by team.
-        
-        Args:
-            team_id (str, optional): Team ID to filter by. Defaults to None.
-            
-        Returns:
-            list: List of dictionaries with player information
-                Each dictionary contains: id, name, team, position
-        """
-        # YOUR CODE HERE
-        pass
-    
-    def get_player_stats(self, player_id):
-        """
-        Get detailed statistics for a specific player.
-        
-        Args:
-            player_id (str): ID of the player
-            
-        Returns:
-            dict: Dictionary with player statistics
-        """
-        # YOUR CODE HERE
-        pass
-    
-    def get_team_stats(self, team_id):
-        """
-        Get detailed statistics for a specific team.
-        
-        Args:
-            team_id (str): ID of the team
-            
-        Returns:
-            dict: Dictionary with team statistics
-        """
-        # YOUR CODE HERE
-        pass
-    
-    def scrape_all_data(self, output_dir='scraped_data'):
-        """
-        Scrape all data and save to files.
-        
-        Args:
-            output_dir (str, optional): Directory to save output files. Defaults to 'scraped_data'.
-            
-        Returns:
-            dict: Summary of scraped data
-        """
-        # YOUR CODE HERE
-        pass
-    
-    def _save_to_csv(self, data, filepath):
-        """
-        Save data to a CSV file.
-        
-        Args:
-            data (list): List of dictionaries with uniform keys
-            filepath (str): Path to save the CSV file
-            
-        Returns:
-            bool: True if successful
-        """
-        # YOUR CODE HERE
-        pass
-    
-    def _save_to_json(self, data, filepath):
-        """
-        Save data to a JSON file.
-        
-        Args:
-            data (dict or list): Data to save
-            filepath (str): Path to save the JSON file
-            
-        Returns:
-            bool: True if successful
-        """
-        # YOUR CODE HERE
-        pass
+    Args:
+        data: The data to save (list of dictionaries)
+        filename: The name of the CSV file to save to
+    """
+    # TODO: Implement this function to save the data to a CSV file
+    # Make sure to:
+    # - Create the file with appropriate headers
+    # - Handle cases where the dictionaries might have different keys
+    # - Create the directory if it doesn't exist
+    pass
 
 
 def main():
-    """Run the soccer stats scraper."""
-    # Demo URL (in a real assignment, this would be provided)
-    # This is a placeholder - students would be given a actual demo site
-    DEMO_URL = "http://example-soccer-stats.com"
+    """
+    Main function to run the web scraper.
+    """
+    # TODO: Implement the main function to orchestrate the web scraping process
+    # Use the demo URL: "https://web-scraping-demo.onrender.com/ncaa-soccer-stats"
+    # This is a fictional demo site for educational purposes
     
-    print("Soccer Stats Web Scraper")
-    print(f"Target URL: {DEMO_URL}")
-    print("Note: This is a demonstration only. In a real assignment, you would be provided with a working demo website.")
-    
-    scraper = SoccerStatsScraper(DEMO_URL)
-    
-    # Since we don't have a real demo site for this template,
-    # we'll just print the methods that would be called
-    
-    print("\nThe implementation would include:")
-    print("1. Making HTTP requests with proper headers and delays")
-    print("2. Parsing HTML with Beautiful Soup")
-    print("3. Extracting structured data from tables and lists")
-    print("4. Handling pagination if present")
-    print("5. Saving data to CSV and JSON files")
-    print("6. Implementing error handling and retries")
-    
-    print("\nExample usage (with a real demo site):")
-    print("scraper = SoccerStatsScraper(DEMO_URL)")
-    print("teams = scraper.get_teams()")
-    print("players = scraper.get_players()")
-    print("player_stats = scraper.get_player_stats('player_id')")
-    print("team_stats = scraper.get_team_stats('team_id')")
-    print("summary = scraper.scrape_all_data()")
+    # Example workflow:
+    # 1. Fetch the webpage
+    # 2. Parse the HTML
+    # 3. Extract player statistics
+    # 4. Extract team statistics
+    # 5. Save the data to CSV files
+    pass
+
 
 if __name__ == "__main__":
     main()

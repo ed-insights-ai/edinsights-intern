@@ -1,139 +1,67 @@
 /* 
-Assignment: CSS Styling
--------------------
-Style the webpage.html file to create an attractive, responsive design.
-Requirements:
-1. Use responsive design principles (media queries, flexible layouts)
-2. Create a color scheme that's visually appealing
-3. Style all sections of the webpage
-4. Use CSS Grid and/or Flexbox for layouts
-5. Include transitions or animations for interactive elements
+CHALLENGE: Style the Soccer Analytics Dashboard
 
-The code below provides a starting point. Replace the comments with your implementation.
+Your task is to create a CSS stylesheet for the soccer analytics dashboard webpage.
+Focus on creating a clean, responsive design that effectively organizes the soccer data.
+
+REQUIREMENTS:
+1. Set up a color scheme appropriate for a soccer analytics dashboard
+2. Create a responsive navigation menu that works on mobile and desktop
+3. Style the player statistics tables or cards
+4. Create an appealing layout for team statistics
+5. Style the data filtering form
+6. Add a placeholder for graphical elements (charts/graphs)
+7. Create a responsive footer that adjusts to different screen sizes
+8. Implement at least one media query for responsive design
+
+NOTES:
+- Use a mobile-first approach for your CSS
+- Focus on creating a clean, readable design
+- Implement proper spacing and typography
+- Use CSS variables for colors and consistent values
+- Add comments to explain your styling decisions
 */
 
-/* Reset and Base Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* 
-TODO: Add base styles for:
-- Body (font-family, line-height, color, background)
-- Typography (headings, paragraphs, links)
-- Containers and layout elements
-*/
-
-/* Variables */
+/* CSS Variables */
 :root {
-    /* 
-    TODO: Define CSS variables for:
-    - Color palette (primary, secondary, accent, background, text colors)
-    - Font sizes
-    - Spacing values
-    - Breakpoints
-    */
+    /* TODO: Define your color palette and other variables */
 }
 
-/* Layout */
-/* 
-TODO: Create styles for the main layout:
-- Container widths and max-widths
-- Grid or Flexbox layouts
-- Spacing between sections
-*/
+/* Global Styles */
+* {
+    /* TODO: Set up box-sizing and basic reset */
+}
 
-/* Header Styles */
-/* 
-TODO: Style the header:
-- Navigation menu (horizontal on desktop, hamburger menu on mobile)
-- Logo/title styling
-- Fixed or sticky positioning if desired
-*/
+body {
+    /* TODO: Set up basic body styling */
+}
 
-/* Hero Section */
-/* 
-TODO: Style the hero section:
-- Background (color or image)
-- Text alignment and spacing
-- Call-to-action button styling
-*/
+/* Header and Navigation Styles */
+header {
+    /* TODO: Style the header and navigation */
+}
 
-/* Stats Overview */
-/* 
-TODO: Style the stats overview section:
-- Card/box designs for statistics
-- Grid or Flexbox layout for the cards
-- Icons or visual elements
-*/
+/* Main Content Styles */
+main {
+    /* TODO: Style the main content area */
+}
 
-/* Top Players Section */
-/* 
-TODO: Style the top players table:
-- Table layout and borders
-- Header row styling
-- Alternating row colors
-- Responsive table behavior (consider how it will look on mobile)
-*/
+/* Player Statistics Styles */
+/* TODO: Add styles for player statistics tables or cards */
 
-/* Team Comparison Section */
-/* 
-TODO: Style the team comparison section:
-- Form controls (dropdowns, buttons)
-- Comparison display area
-- Visual elements to make comparisons clear
-*/
+/* Team Statistics Styles */
+/* TODO: Add styles for team statistics section */
 
-/* Search Section */
-/* 
-TODO: Style the search section:
-- Search input and button
-- Filter controls
-- Results area (even if empty in the static HTML)
-*/
+/* Form Styles */
+/* TODO: Style the data filtering form */
 
-/* Sidebar */
-/* 
-TODO: Style the sidebar:
-- Width and positioning
-- Content layout
-- Visual separation from main content
-- Consider how/if it appears on mobile
-*/
+/* Data Visualization Placeholder */
+/* TODO: Style the chart/graph placeholder */
 
-/* Footer */
-/* 
-TODO: Style the footer:
-- Background color
-- Text styling
-- Link layouts
-- Spacing and padding
-*/
+/* Footer Styles */
+footer {
+    /* TODO: Style the footer */
+}
 
 /* Responsive Design */
-/* 
-TODO: Add media queries for different screen sizes:
-- Small screens (mobile)
-- Medium screens (tablets)
-- Large screens (desktops)
-
-Adjust layouts, font sizes, spacing, and possibly hide/show elements
-*/
-
-/* Animations and Transitions */
-/* 
-TODO: Add animations and transitions:
-- Hover effects for links and buttons
-- Transitions for interactive elements
-- Any loading animations or effects
-*/
-
-/* Accessibility Considerations */
-/* 
-TODO: Add styles that improve accessibility:
-- Focus states for interactive elements
-- Sufficient color contrast
-- Readable font sizes
-*/
+/* TODO: Add media queries for different screen sizes */

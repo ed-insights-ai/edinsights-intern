@@ -1,257 +1,336 @@
 """
-Statistical Analysis
-----------------
-Perform statistical analysis on soccer player data.
-This exercise focuses on applying statistical methods to derive insights.
+CHALLENGE: Statistical Analysis of Soccer Data
+
+Your task is to perform statistical analysis on soccer player and team data.
+You'll apply statistical methods to uncover patterns, test hypotheses, and draw conclusions.
+
+The challenge includes:
+1. Calculating descriptive statistics for player and team performance
+2. Implementing hypothesis testing to compare groups
+3. Analyzing distributions of various soccer metrics
+4. Identifying correlations between different performance indicators
+5. Drawing statistical conclusions to inform decision making
+
+REQUIREMENTS:
+- Use appropriate statistical methods for each analysis
+- Implement proper hypothesis testing
+- Handle statistical assumptions correctly
+- Visualize distributions and relationships
+- Document your process and interpretations
 """
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 import scipy.stats as stats
-from scipy import stats
-from sklearn.preprocessing import StandardScaler
-import os
-import logging
+from typing import List, Dict, Tuple, Optional, Union
+import seaborn as sns
 
-# Set up logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[logging.FileHandler("statistical_analysis.log"), logging.StreamHandler()]
-)
-logger = logging.getLogger(__name__)
 
-# Create directories if they don't exist
-os.makedirs('data', exist_ok=True)
-os.makedirs('plots', exist_ok=True)
-
-def load_data():
+def calculate_descriptive_stats(data: np.ndarray, metric_name: str) -> Dict[str, float]:
     """
-    Load the sample player data for analysis.
-    
-    Returns:
-        pandas.DataFrame: DataFrame containing player data or None if file not found
-    """
-    if not os.path.exists('data/player_data.csv'):
-        print("Sample data not found. Please run pandas_analysis.py first.")
-        return None
-    
-    return pd.read_csv('data/player_data.csv')
-
-def task_1_descriptive_statistics(df):
-    """
-    Task 1: Calculate descriptive statistics for player data.
+    Calculate descriptive statistics for a given metric.
     
     Args:
-        df (pandas.DataFrame): DataFrame containing player data
+        data: NumPy array of values for the metric
+        metric_name: Name of the metric being analyzed
         
     Returns:
-        dict: Dictionary containing descriptive statistics
+        Dictionary of descriptive statistics
     """
-    # YOUR CODE HERE
-    # 1. Calculate basic statistics (mean, median, mode, etc.)
-    # 2. Calculate dispersion measures (variance, standard deviation, range, IQR)
-    # 3. Identify skewness and kurtosis in distributions
-    # 4. Generate summary statistics by position
-    # 5. Return a dictionary with the results
+    # TODO: Implement this function to calculate descriptive statistics
+    # Include metrics like:
+    # - Mean, median, mode
+    # - Standard deviation, variance
+    # - Min, max, range
+    # - Quartiles, IQR
+    # - Skewness, kurtosis
     pass
 
-def task_2_data_distributions(df):
+
+def plot_distribution(data: np.ndarray, metric_name: str, bins: int = 20) -> None:
     """
-    Task 2: Analyze data distributions and fit probability distributions.
+    Plot the distribution of a metric with appropriate overlay.
     
     Args:
-        df (pandas.DataFrame): DataFrame containing player data
-        
-    Returns:
-        dict: Dictionary containing distribution analysis results
+        data: NumPy array of values for the metric
+        metric_name: Name of the metric being plotted
+        bins: Number of bins for the histogram
     """
-    # YOUR CODE HERE
-    # 1. Plot histograms and density plots for key metrics
-    # 2. Check for normality using statistical tests
-    # 3. Fit probability distributions to the data
-    # 4. Compare empirical distributions with theoretical ones
-    # 5. Return a dictionary with the results
+    # TODO: Implement this function to visualize distributions
+    # Consider including:
+    # - Histogram
+    # - Kernel density estimate
+    # - Normal distribution overlay (if appropriate)
+    # - Key statistics in the plot
     pass
 
-def task_3_correlation_analysis(df):
+
+def independent_t_test(group1: np.ndarray, group2: np.ndarray, 
+                      metric_name: str) -> Dict[str, float]:
     """
-    Task 3: Perform correlation analysis on player metrics.
+    Perform an independent samples t-test to compare two groups.
     
     Args:
-        df (pandas.DataFrame): DataFrame containing player data
+        group1: NumPy array of values for the first group
+        group2: NumPy array of values for the second group
+        metric_name: Name of the metric being compared
         
     Returns:
-        dict: Dictionary containing correlation analysis results
+        Dictionary with t-statistic, p-value, degrees of freedom, and interpretation
     """
-    # YOUR CODE HERE
-    # 1. Calculate correlation matrices for player metrics
-    # 2. Identify strong positive and negative correlations
-    # 3. Visualize correlations using heatmaps
-    # 4. Calculate partial correlations to control for confounding variables
-    # 5. Return a dictionary with the results
+    # TODO: Implement this function to perform an independent t-test
+    # Make sure to check assumptions and document the process
     pass
 
-def task_4_hypothesis_testing(df):
+
+def paired_t_test(pre_values: np.ndarray, post_values: np.ndarray, 
+                 metric_name: str) -> Dict[str, float]:
     """
-    Task 4: Perform hypothesis tests on player data.
+    Perform a paired samples t-test to compare pre and post measurements.
     
     Args:
-        df (pandas.DataFrame): DataFrame containing player data
+        pre_values: NumPy array of pre-measurement values
+        post_values: NumPy array of post-measurement values
+        metric_name: Name of the metric being compared
         
     Returns:
-        dict: Dictionary containing hypothesis testing results
+        Dictionary with t-statistic, p-value, degrees of freedom, and interpretation
     """
-    # YOUR CODE HERE
-    # 1. Formulate null and alternative hypotheses
-    # 2. Perform t-tests to compare means between groups
-    # 3. Perform ANOVA to compare means across multiple groups
-    # 4. Perform non-parametric tests where appropriate
-    # 5. Return a dictionary with the results
+    # TODO: Implement this function to perform a paired t-test
+    # Make sure to check assumptions and document the process
     pass
 
-def task_5_outlier_detection(df):
+
+def anova_test(groups: List[np.ndarray], group_names: List[str], 
+              metric_name: str) -> Dict[str, float]:
     """
-    Task 5: Detect outliers in player metrics.
+    Perform a one-way ANOVA to compare multiple groups.
     
     Args:
-        df (pandas.DataFrame): DataFrame containing player data
+        groups: List of NumPy arrays for each group
+        group_names: List of names for each group
+        metric_name: Name of the metric being compared
         
     Returns:
-        dict: Dictionary containing outlier detection results
+        Dictionary with F-statistic, p-value, and interpretation
     """
-    # YOUR CODE HERE
-    # 1. Identify outliers using statistical methods (z-score, IQR)
-    # 2. Visualize outliers using box plots and scatter plots
-    # 3. Determine which outliers represent exceptional performance
-    # 4. Apply different outlier treatment methods
-    # 5. Return a dictionary with the results
+    # TODO: Implement this function to perform one-way ANOVA
+    # Make sure to check assumptions and document the process
     pass
 
-def task_6_player_comparison(df):
+
+def correlation_analysis(data: pd.DataFrame, 
+                        metrics: List[str]) -> pd.DataFrame:
     """
-    Task 6: Develop statistical methods for player comparison.
+    Perform correlation analysis between multiple metrics.
     
     Args:
-        df (pandas.DataFrame): DataFrame containing player data
+        data: Pandas DataFrame containing the metrics
+        metrics: List of metric names to analyze
         
     Returns:
-        dict: Dictionary containing player comparison results
+        Pandas DataFrame of correlation coefficients
     """
-    # YOUR CODE HERE
-    # 1. Normalize player metrics for fair comparison
-    # 2. Create composite scores based on multiple metrics
-    # 3. Develop position-specific comparison methods
-    # 4. Rank players within their positions
-    # 5. Return a dictionary with the results
+    # TODO: Implement this function to calculate correlations
+    # Use Pearson's correlation coefficient or other appropriate measures
     pass
 
-def task_7_performance_prediction(df):
+
+def plot_correlation_matrix(correlation_matrix: pd.DataFrame) -> None:
     """
-    Task 7: Build simple statistical models for performance prediction.
+    Plot a heatmap of the correlation matrix.
     
     Args:
-        df (pandas.DataFrame): DataFrame containing player data
-        
-    Returns:
-        dict: Dictionary containing prediction model results
+        correlation_matrix: Pandas DataFrame of correlation coefficients
     """
-    # YOUR CODE HERE
-    # 1. Split data into training and testing sets
-    # 2. Build regression models to predict key performance indicators
-    # 3. Evaluate model performance
-    # 4. Analyze which factors are most predictive
-    # 5. Return a dictionary with the results
+    # TODO: Implement this function to visualize the correlation matrix
+    # Create a clear and interpretable heatmap
     pass
 
-def task_8_team_optimization(df):
+
+def chi_square_test(observed: np.ndarray, expected: np.ndarray) -> Dict[str, float]:
     """
-    Task 8: Use statistical methods for team optimization.
+    Perform a chi-square test to compare observed and expected frequencies.
     
     Args:
-        df (pandas.DataFrame): DataFrame containing player data
+        observed: NumPy array of observed frequencies
+        expected: NumPy array of expected frequencies
         
     Returns:
-        dict: Dictionary containing team optimization results
+        Dictionary with chi-square statistic, p-value, and interpretation
     """
-    # YOUR CODE HERE
-    # 1. Create metrics for team balance and synergy
-    # 2. Optimize team composition based on complementary skills
-    # 3. Analyze positional needs and strengths
-    # 4. Develop a team rating system
-    # 5. Return a dictionary with the results
+    # TODO: Implement this function to perform a chi-square test
+    # Make sure to check assumptions and document the process
     pass
 
-def create_visualizations(df, results):
+
+def mann_whitney_test(group1: np.ndarray, group2: np.ndarray, 
+                     metric_name: str) -> Dict[str, float]:
     """
-    Create visualizations for the statistical analysis results.
+    Perform a Mann-Whitney U test for non-parametric comparison of two groups.
     
     Args:
-        df (pandas.DataFrame): DataFrame containing player data
-        results (dict): Dictionary containing analysis results
+        group1: NumPy array of values for the first group
+        group2: NumPy array of values for the second group
+        metric_name: Name of the metric being compared
         
     Returns:
-        None
+        Dictionary with U-statistic, p-value, and interpretation
     """
-    # Set the style for the plots
-    sns.set(style="whitegrid")
-    
-    # YOUR CODE HERE (OPTIONAL)
-    # Create relevant plots based on the analysis results
-    # Save the plots to the 'plots' directory
+    # TODO: Implement this function to perform a Mann-Whitney U test
+    # Use this for non-parametric comparisons when t-test assumptions are violated
     pass
+
+
+def regression_analysis(x: np.ndarray, y: np.ndarray, 
+                       x_name: str, y_name: str) -> Dict[str, float]:
+    """
+    Perform simple linear regression analysis.
+    
+    Args:
+        x: NumPy array of independent variable values
+        y: NumPy array of dependent variable values
+        x_name: Name of the independent variable
+        y_name: Name of the dependent variable
+        
+    Returns:
+        Dictionary with regression statistics
+    """
+    # TODO: Implement this function to perform regression analysis
+    # Include slope, intercept, r-squared, p-value, and standard error
+    pass
+
+
+def plot_regression(x: np.ndarray, y: np.ndarray, 
+                   x_name: str, y_name: str, stats_dict: Dict[str, float]) -> None:
+    """
+    Plot the regression line with the data points and confidence interval.
+    
+    Args:
+        x: NumPy array of independent variable values
+        y: NumPy array of dependent variable values
+        x_name: Name of the independent variable
+        y_name: Name of the dependent variable
+        stats_dict: Dictionary of regression statistics
+    """
+    # TODO: Implement this function to visualize the regression analysis
+    # Include the scatter plot, regression line, and confidence interval
+    pass
+
+
+def calculate_effect_size(group1: np.ndarray, group2: np.ndarray) -> Dict[str, float]:
+    """
+    Calculate effect size measures for the difference between two groups.
+    
+    Args:
+        group1: NumPy array of values for the first group
+        group2: NumPy array of values for the second group
+        
+    Returns:
+        Dictionary with various effect size measures
+    """
+    # TODO: Implement this function to calculate effect sizes
+    # Include Cohen's d, Hedge's g, and common language effect size
+    pass
+
+
+def bootstrap_confidence_interval(data: np.ndarray, statistic_func: callable, 
+                                 confidence: float = 0.95, 
+                                 n_iterations: int = 1000) -> Tuple[float, float]:
+    """
+    Calculate bootstrap confidence interval for a statistic.
+    
+    Args:
+        data: NumPy array of data values
+        statistic_func: Function to calculate the desired statistic
+        confidence: Confidence level (default: 0.95)
+        n_iterations: Number of bootstrap iterations
+        
+    Returns:
+        Tuple of (lower_bound, upper_bound) for the confidence interval
+    """
+    # TODO: Implement this function to calculate bootstrap confidence intervals
+    # Use resampling with replacement to estimate the sampling distribution
+    pass
+
 
 def main():
-    """Run all statistical analysis tasks."""
-    print("Statistical Analysis")
+    """
+    Main function to demonstrate statistical analysis capabilities.
+    """
+    # Generate some sample data for demonstration
+    np.random.seed(42)  # For reproducibility
     
-    # Load the data
-    df = load_data()
-    if df is None:
-        return
+    # Player statistics for two teams
+    num_players_per_team = 25
     
-    print("\nTask 1: Descriptive Statistics")
-    descriptive_stats = task_1_descriptive_statistics(df)
+    # Team A players
+    team_a_goals = np.random.poisson(8, num_players_per_team)
+    team_a_assists = np.random.poisson(5, num_players_per_team)
+    team_a_shots = team_a_goals * np.random.randint(3, 8, num_players_per_team)
+    team_a_passes = np.random.normal(300, 50, num_players_per_team).astype(int)
+    team_a_minutes = np.random.normal(1800, 300, num_players_per_team).astype(int)
     
-    print("\nTask 2: Data Distributions")
-    distribution_results = task_2_data_distributions(df)
+    # Team B players
+    team_b_goals = np.random.poisson(6, num_players_per_team)
+    team_b_assists = np.random.poisson(7, num_players_per_team)
+    team_b_shots = team_b_goals * np.random.randint(4, 9, num_players_per_team)
+    team_b_passes = np.random.normal(350, 40, num_players_per_team).astype(int)
+    team_b_minutes = np.random.normal(1700, 250, num_players_per_team).astype(int)
     
-    print("\nTask 3: Correlation Analysis")
-    correlation_results = task_3_correlation_analysis(df)
+    # Player positions (categorical data)
+    positions = ['Forward', 'Midfielder', 'Defender', 'Goalkeeper']
+    position_probabilities = [0.2, 0.4, 0.3, 0.1]  # Probability for each position
     
-    print("\nTask 4: Hypothesis Testing")
-    hypothesis_results = task_4_hypothesis_testing(df)
+    team_a_positions = np.random.choice(positions, num_players_per_team, p=position_probabilities)
+    team_b_positions = np.random.choice(positions, num_players_per_team, p=position_probabilities)
     
-    print("\nTask 5: Outlier Detection")
-    outlier_results = task_5_outlier_detection(df)
+    # Create DataFrames for easier analysis
+    team_a_df = pd.DataFrame({
+        'team': ['Team A'] * num_players_per_team,
+        'goals': team_a_goals,
+        'assists': team_a_assists,
+        'shots': team_a_shots,
+        'passes': team_a_passes,
+        'minutes': team_a_minutes,
+        'position': team_a_positions
+    })
     
-    print("\nTask 6: Player Comparison")
-    comparison_results = task_6_player_comparison(df)
+    team_b_df = pd.DataFrame({
+        'team': ['Team B'] * num_players_per_team,
+        'goals': team_b_goals,
+        'assists': team_b_assists,
+        'shots': team_b_shots,
+        'passes': team_b_passes,
+        'minutes': team_b_minutes,
+        'position': team_b_positions
+    })
     
-    print("\nTask 7: Performance Prediction")
-    prediction_results = task_7_performance_prediction(df)
+    # Combine the DataFrames
+    all_players_df = pd.concat([team_a_df, team_b_df], ignore_index=True)
     
-    print("\nTask 8: Team Optimization")
-    optimization_results = task_8_team_optimization(df)
+    # Add some calculated metrics
+    all_players_df['goals_per_90'] = all_players_df['goals'] * 90 / all_players_df['minutes']
+    all_players_df['assists_per_90'] = all_players_df['assists'] * 90 / all_players_df['minutes']
+    all_players_df['shot_conversion'] = all_players_df['goals'] / all_players_df['shots']
     
-    # Collect all results
-    all_results = {
-        'descriptive_stats': descriptive_stats,
-        'distribution_results': distribution_results,
-        'correlation_results': correlation_results,
-        'hypothesis_results': hypothesis_results,
-        'outlier_results': outlier_results,
-        'comparison_results': comparison_results,
-        'prediction_results': prediction_results,
-        'optimization_results': optimization_results
-    }
+    # Pre and post training data (for paired tests)
+    pre_training_performance = np.random.normal(0.65, 0.1, 20)
+    post_training_performance = pre_training_performance + np.random.normal(0.05, 0.03, 20)
     
-    print("\nCreating visualizations...")
-    create_visualizations(df, all_results)
+    # TODO: Implement your analysis workflow here
+    # Use the functions you've implemented to analyze the data
+    # Example workflow:
+    # 1. Calculate descriptive statistics for key metrics
+    # 2. Plot distributions of important variables
+    # 3. Compare teams using hypothesis tests
+    # 4. Analyze correlations between metrics
+    # 5. Perform regression analysis for predictive relationships
+    # 6. Calculate confidence intervals for key statistics
     
-    print("\nAnalysis complete! Review the outputs above and check the 'plots' directory for visualizations.")
+    print("Statistical analysis completed!")
+
 
 if __name__ == "__main__":
     main()

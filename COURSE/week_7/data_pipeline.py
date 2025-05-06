@@ -1,819 +1,685 @@
 """
-Data Pipeline Development
----------------------
-Create a data processing pipeline for soccer statistics.
-This exercise focuses on building a robust, multi-stage data processing system.
+CHALLENGE: Soccer Data Processing Pipeline
+
+Your task is to create a data processing pipeline for soccer analytics.
+This pipeline will handle the end-to-end flow of soccer data from collection to analysis.
+
+The challenge includes:
+1. Building a modular data processing pipeline
+2. Implementing data extraction, transformation, and loading (ETL)
+3. Handling different data sources and formats
+4. Creating efficient data transformations
+5. Implementing caching and optimization
+
+REQUIREMENTS:
+- Create a modular, extensible pipeline architecture
+- Handle multiple data sources and formats
+- Implement proper error handling and logging
+- Optimize for performance with large datasets
+- Document your pipeline design and implementation
 """
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import os
+import json
 import logging
 import time
-import json
+import hashlib
 import pickle
-from datetime import datetime
-from functools import wraps
+from typing import List, Dict, Tuple, Optional, Union, Callable, Any
 
-# Set up logging
+
+# Configure logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[logging.FileHandler("data_pipeline.log"), logging.StreamHandler()]
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 
-# Create directories if they don't exist
-os.makedirs('data', exist_ok=True)
-os.makedirs('data/raw', exist_ok=True)
-os.makedirs('data/processed', exist_ok=True)
-os.makedirs('data/outputs', exist_ok=True)
-os.makedirs('cache', exist_ok=True)
-
-def timer_decorator(func):
-    """
-    Decorator to measure the execution time of a function.
-    
-    Args:
-        func: The function to be decorated
-        
-    Returns:
-        wrapper: The wrapped function
-    """
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        start_time = time.time()
-        result = func(*args, **kwargs)
-        end_time = time.time()
-        execution_time = end_time - start_time
-        logger.info(f"Function {func.__name__} executed in {execution_time:.4f} seconds")
-        return result
-    return wrapper
-
-def cache_result(cache_path):
-    """
-    Decorator to cache function results to a file.
-    
-    Args:
-        cache_path (str): Path to save the cache
-        
-    Returns:
-        decorator: The decorator function
-    """
-    def decorator(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            # Create a cache key based on function name, args, and kwargs
-            cache_key = f"{func.__name__}_{str(args)}_{str(kwargs)}"
-            cache_file = os.path.join(cache_path, f"{hash(cache_key)}.pkl")
-            
-            # Check if cache exists and is recent (less than 1 day old)
-            if os.path.exists(cache_file):
-                file_age = time.time() - os.path.getmtime(cache_file)
-                if file_age < 86400:  # 24 hours in seconds
-                    logger.info(f"Loading cached result for {func.__name__}")
-                    with open(cache_file, 'rb') as f:
-                        return pickle.load(f)
-            
-            # Execute the function and cache the result
-            result = func(*args, **kwargs)
-            with open(cache_file, 'wb') as f:
-                pickle.dump(result, f)
-            logger.info(f"Cached result for {func.__name__}")
-            return result
-        return wrapper
-    return decorator
 
 class DataSource:
     """
     Base class for data sources in the pipeline.
     
-    Attributes:
-        name (str): Name of the data source
-        description (str): Description of the data source
+    This abstract class defines the interface for all data sources.
+    Subclasses should implement the extract method.
     """
     
-    def __init__(self, name, description=""):
+    def __init__(self, name: str):
         """
-        Initialize a data source.
+        Initialize the data source.
         
         Args:
-            name (str): Name of the data source
-            description (str, optional): Description of the data source. Defaults to "".
+            name: Name of the data source
         """
         self.name = name
-        self.description = description
-    
-    def get_data(self):
+        
+    def extract(self) -> pd.DataFrame:
         """
-        Get data from the source.
+        Extract data from the source.
         
         Returns:
-            pandas.DataFrame: DataFrame containing the data
+            A pandas DataFrame containing the extracted data
         """
-        raise NotImplementedError("Subclasses must implement get_data method")
+        raise NotImplementedError("Subclasses must implement extract()")
     
-    def __str__(self):
-        """String representation of the data source."""
+    def __str__(self) -> str:
         return f"DataSource({self.name})"
+
 
 class CSVDataSource(DataSource):
     """
-    Data source that reads from a CSV file.
-    
-    Attributes:
-        name (str): Name of the data source
-        file_path (str): Path to the CSV file
-        description (str): Description of the data source
+    Data source for CSV files.
     """
     
-    def __init__(self, name, file_path, description=""):
+    def __init__(self, name: str, file_path: str, **kwargs):
         """
-        Initialize a CSV data source.
+        Initialize the CSV data source.
         
         Args:
-            name (str): Name of the data source
-            file_path (str): Path to the CSV file
-            description (str, optional): Description of the data source. Defaults to "".
+            name: Name of the data source
+            file_path: Path to the CSV file
+            **kwargs: Additional arguments for pd.read_csv()
         """
-        super().__init__(name, description)
+        super().__init__(name)
         self.file_path = file_path
-    
-    @timer_decorator
-    def get_data(self):
+        self.kwargs = kwargs
+        
+    def extract(self) -> pd.DataFrame:
         """
-        Get data from the CSV file.
+        Extract data from the CSV file.
         
         Returns:
-            pandas.DataFrame: DataFrame containing the data from the CSV file
+            A pandas DataFrame containing the data from the CSV file
         """
-        # YOUR CODE HERE
-        # 1. Check if the file exists
-        # 2. Read the CSV file into a pandas DataFrame
-        # 3. Return the DataFrame
+        # TODO: Implement this method to extract data from a CSV file
+        # Make sure to handle errors appropriately
         pass
 
-class SQLDataSource(DataSource):
+
+class JSONDataSource(DataSource):
     """
-    Data source that reads from a SQL database.
-    
-    Attributes:
-        name (str): Name of the data source
-        connection_string (str): Database connection string
-        query (str): SQL query to execute
-        description (str): Description of the data source
+    Data source for JSON files.
     """
     
-    def __init__(self, name, connection_string, query, description=""):
+    def __init__(self, name: str, file_path: str, **kwargs):
         """
-        Initialize a SQL data source.
+        Initialize the JSON data source.
         
         Args:
-            name (str): Name of the data source
-            connection_string (str): Database connection string
-            query (str): SQL query to execute
-            description (str, optional): Description of the data source. Defaults to "".
+            name: Name of the data source
+            file_path: Path to the JSON file
+            **kwargs: Additional arguments for pd.read_json()
         """
-        super().__init__(name, description)
-        self.connection_string = connection_string
-        self.query = query
-    
-    @timer_decorator
-    def get_data(self):
+        super().__init__(name)
+        self.file_path = file_path
+        self.kwargs = kwargs
+        
+    def extract(self) -> pd.DataFrame:
         """
-        Get data from the SQL database.
+        Extract data from the JSON file.
         
         Returns:
-            pandas.DataFrame: DataFrame containing the results of the SQL query
+            A pandas DataFrame containing the data from the JSON file
         """
-        # YOUR CODE HERE
-        # 1. Connect to the database
-        # 2. Execute the query and fetch the results
-        # 3. Return the results as a DataFrame
-        # Note: For this exercise, you can simulate this by returning dummy data
+        # TODO: Implement this method to extract data from a JSON file
+        # Make sure to handle errors appropriately
         pass
+
 
 class APIDataSource(DataSource):
     """
-    Data source that reads from an API.
-    
-    Attributes:
-        name (str): Name of the data source
-        api_url (str): URL of the API
-        params (dict): Parameters for the API request
-        description (str): Description of the data source
+    Data source for API endpoints.
     """
     
-    def __init__(self, name, api_url, params=None, description=""):
+    def __init__(self, name: str, url: str, params: Dict[str, Any] = None):
         """
-        Initialize an API data source.
+        Initialize the API data source.
         
         Args:
-            name (str): Name of the data source
-            api_url (str): URL of the API
-            params (dict, optional): Parameters for the API request. Defaults to None.
-            description (str, optional): Description of the data source. Defaults to "".
+            name: Name of the data source
+            url: URL of the API endpoint
+            params: Parameters for the API request
         """
-        super().__init__(name, description)
-        self.api_url = api_url
+        super().__init__(name)
+        self.url = url
         self.params = params or {}
-    
-    @timer_decorator
-    def get_data(self):
+        
+    def extract(self) -> pd.DataFrame:
         """
-        Get data from the API.
+        Extract data from the API endpoint.
         
         Returns:
-            pandas.DataFrame: DataFrame containing the data from the API
+            A pandas DataFrame containing the data from the API
         """
-        # YOUR CODE HERE
-        # 1. Make a request to the API
-        # 2. Parse the response
-        # 3. Return the data as a DataFrame
-        # Note: For this exercise, you can simulate this by returning dummy data
+        # TODO: Implement this method to extract data from an API
+        # Make sure to handle errors appropriately
         pass
 
-class DataTransformer:
+
+class DatabaseDataSource(DataSource):
+    """
+    Data source for database connections.
+    """
+    
+    def __init__(self, name: str, connection_string: str, query: str):
+        """
+        Initialize the database data source.
+        
+        Args:
+            name: Name of the data source
+            connection_string: Connection string for the database
+            query: SQL query to execute
+        """
+        super().__init__(name)
+        self.connection_string = connection_string
+        self.query = query
+        
+    def extract(self) -> pd.DataFrame:
+        """
+        Extract data from the database.
+        
+        Returns:
+            A pandas DataFrame containing the data from the database
+        """
+        # TODO: Implement this method to extract data from a database
+        # Make sure to handle errors appropriately
+        pass
+
+
+class Transformer:
     """
     Base class for data transformers in the pipeline.
     
-    Attributes:
-        name (str): Name of the transformer
-        description (str): Description of the transformer
+    This abstract class defines the interface for all data transformers.
+    Subclasses should implement the transform method.
     """
     
-    def __init__(self, name, description=""):
+    def __init__(self, name: str):
         """
-        Initialize a data transformer.
+        Initialize the transformer.
         
         Args:
-            name (str): Name of the transformer
-            description (str, optional): Description of the transformer. Defaults to "".
+            name: Name of the transformer
         """
         self.name = name
-        self.description = description
-    
-    def transform(self, df):
+        
+    def transform(self, data: pd.DataFrame) -> pd.DataFrame:
         """
-        Transform the data.
+        Transform the input data.
         
         Args:
-            df (pandas.DataFrame): DataFrame to transform
+            data: Input data to transform
             
         Returns:
-            pandas.DataFrame: Transformed DataFrame
+            Transformed data
         """
-        raise NotImplementedError("Subclasses must implement transform method")
+        raise NotImplementedError("Subclasses must implement transform()")
     
-    def __str__(self):
-        """String representation of the transformer."""
-        return f"DataTransformer({self.name})"
+    def __str__(self) -> str:
+        return f"Transformer({self.name})"
 
-class CleaningTransformer(DataTransformer):
+
+class CleaningTransformer(Transformer):
     """
-    Transformer for data cleaning operations.
-    
-    Attributes:
-        name (str): Name of the transformer
-        columns_to_drop (list): Columns to drop
-        columns_to_fill (dict): Columns to fill with specified values
-        description (str): Description of the transformer
+    Transformer for cleaning data.
     """
     
-    def __init__(self, name, columns_to_drop=None, columns_to_fill=None, description=""):
+    def __init__(self, name: str, columns_to_clean: List[str] = None):
         """
-        Initialize a cleaning transformer.
+        Initialize the cleaning transformer.
         
         Args:
-            name (str): Name of the transformer
-            columns_to_drop (list, optional): Columns to drop. Defaults to None.
-            columns_to_fill (dict, optional): Columns to fill with specified values. Defaults to None.
-            description (str, optional): Description of the transformer. Defaults to "".
+            name: Name of the transformer
+            columns_to_clean: List of columns to clean (if None, clean all columns)
         """
-        super().__init__(name, description)
-        self.columns_to_drop = columns_to_drop or []
-        self.columns_to_fill = columns_to_fill or {}
-    
-    @timer_decorator
-    def transform(self, df):
+        super().__init__(name)
+        self.columns_to_clean = columns_to_clean
+        
+    def transform(self, data: pd.DataFrame) -> pd.DataFrame:
         """
-        Clean the data by dropping columns and filling missing values.
+        Clean the input data.
         
         Args:
-            df (pandas.DataFrame): DataFrame to clean
+            data: Input data to clean
             
         Returns:
-            pandas.DataFrame: Cleaned DataFrame
+            Cleaned data
         """
-        # YOUR CODE HERE
-        # 1. Create a copy of the DataFrame to avoid modifying the original
-        # 2. Drop the specified columns
-        # 3. Fill missing values in the specified columns
-        # 4. Return the cleaned DataFrame
+        # TODO: Implement this method to clean the data
+        # Handle missing values, data type conversion, etc.
         pass
 
-class FeatureEngineeringTransformer(DataTransformer):
+
+class FeatureEngineeringTransformer(Transformer):
     """
-    Transformer for feature engineering operations.
-    
-    Attributes:
-        name (str): Name of the transformer
-        feature_definitions (dict): Definitions of features to create
-        description (str): Description of the transformer
+    Transformer for feature engineering.
     """
     
-    def __init__(self, name, feature_definitions=None, description=""):
+    def __init__(self, name: str, feature_definitions: Dict[str, Callable]):
         """
-        Initialize a feature engineering transformer.
+        Initialize the feature engineering transformer.
         
         Args:
-            name (str): Name of the transformer
-            feature_definitions (dict, optional): Definitions of features to create. Defaults to None.
-            description (str, optional): Description of the transformer. Defaults to "".
+            name: Name of the transformer
+            feature_definitions: Dictionary mapping feature names to functions that create them
         """
-        super().__init__(name, description)
-        self.feature_definitions = feature_definitions or {}
-    
-    @timer_decorator
-    def transform(self, df):
+        super().__init__(name)
+        self.feature_definitions = feature_definitions
+        
+    def transform(self, data: pd.DataFrame) -> pd.DataFrame:
         """
-        Create new features based on the feature definitions.
+        Add engineered features to the input data.
         
         Args:
-            df (pandas.DataFrame): DataFrame to transform
+            data: Input data to transform
             
         Returns:
-            pandas.DataFrame: DataFrame with new features
+            Data with engineered features
         """
-        # YOUR CODE HERE
-        # 1. Create a copy of the DataFrame to avoid modifying the original
-        # 2. Create new features based on the feature definitions
-        # 3. Return the DataFrame with new features
+        # TODO: Implement this method to add engineered features
+        # Apply each feature definition function to the data
         pass
 
-class AggregationTransformer(DataTransformer):
+
+class AggregationTransformer(Transformer):
     """
-    Transformer for data aggregation operations.
-    
-    Attributes:
-        name (str): Name of the transformer
-        group_by_columns (list): Columns to group by
-        aggregations (dict): Aggregation functions to apply
-        description (str): Description of the transformer
+    Transformer for data aggregation.
     """
     
-    def __init__(self, name, group_by_columns, aggregations, description=""):
+    def __init__(self, name: str, group_by: List[str], aggregations: Dict[str, List[str]]):
         """
-        Initialize an aggregation transformer.
+        Initialize the aggregation transformer.
         
         Args:
-            name (str): Name of the transformer
-            group_by_columns (list): Columns to group by
-            aggregations (dict): Aggregation functions to apply
-            description (str, optional): Description of the transformer. Defaults to "".
+            name: Name of the transformer
+            group_by: Columns to group by
+            aggregations: Dictionary mapping columns to aggregation methods
         """
-        super().__init__(name, description)
-        self.group_by_columns = group_by_columns
+        super().__init__(name)
+        self.group_by = group_by
         self.aggregations = aggregations
-    
-    @timer_decorator
-    def transform(self, df):
+        
+    def transform(self, data: pd.DataFrame) -> pd.DataFrame:
         """
-        Aggregate the data.
+        Aggregate the input data.
         
         Args:
-            df (pandas.DataFrame): DataFrame to aggregate
+            data: Input data to aggregate
             
         Returns:
-            pandas.DataFrame: Aggregated DataFrame
+            Aggregated data
         """
-        # YOUR CODE HERE
-        # 1. Group the DataFrame by the specified columns
-        # 2. Apply the specified aggregation functions
-        # 3. Reset the index to get the groupby columns back
-        # 4. Return the aggregated DataFrame
+        # TODO: Implement this method to aggregate the data
+        # Group by specified columns and apply aggregations
         pass
 
-class DataSink:
+
+class Loader:
     """
-    Base class for data sinks in the pipeline.
+    Base class for data loaders in the pipeline.
     
-    Attributes:
-        name (str): Name of the data sink
-        description (str): Description of the data sink
+    This abstract class defines the interface for all data loaders.
+    Subclasses should implement the load method.
     """
     
-    def __init__(self, name, description=""):
+    def __init__(self, name: str):
         """
-        Initialize a data sink.
+        Initialize the loader.
         
         Args:
-            name (str): Name of the data sink
-            description (str, optional): Description of the data sink. Defaults to "".
+            name: Name of the loader
         """
         self.name = name
-        self.description = description
-    
-    def save_data(self, df):
+        
+    def load(self, data: pd.DataFrame) -> Any:
         """
-        Save the data.
+        Load data to the destination.
         
         Args:
-            df (pandas.DataFrame): DataFrame to save
+            data: Data to load
             
         Returns:
-            bool: True if the data was saved successfully
+            Result of the loading operation
         """
-        raise NotImplementedError("Subclasses must implement save_data method")
+        raise NotImplementedError("Subclasses must implement load()")
     
-    def __str__(self):
-        """String representation of the data sink."""
-        return f"DataSink({self.name})"
+    def __str__(self) -> str:
+        return f"Loader({self.name})"
 
-class CSVDataSink(DataSink):
+
+class CSVLoader(Loader):
     """
-    Data sink that writes to a CSV file.
-    
-    Attributes:
-        name (str): Name of the data sink
-        file_path (str): Path to the CSV file
-        description (str): Description of the data sink
+    Loader for CSV files.
     """
     
-    def __init__(self, name, file_path, description=""):
+    def __init__(self, name: str, file_path: str, **kwargs):
         """
-        Initialize a CSV data sink.
+        Initialize the CSV loader.
         
         Args:
-            name (str): Name of the data sink
-            file_path (str): Path to the CSV file
-            description (str, optional): Description of the data sink. Defaults to "".
+            name: Name of the loader
+            file_path: Path to the CSV file
+            **kwargs: Additional arguments for pd.to_csv()
         """
-        super().__init__(name, description)
+        super().__init__(name)
         self.file_path = file_path
-    
-    @timer_decorator
-    def save_data(self, df):
+        self.kwargs = kwargs
+        
+    def load(self, data: pd.DataFrame) -> str:
         """
-        Save the data to a CSV file.
+        Load data to a CSV file.
         
         Args:
-            df (pandas.DataFrame): DataFrame to save
+            data: Data to load
             
         Returns:
-            bool: True if the data was saved successfully
+            Path to the saved CSV file
         """
-        # YOUR CODE HERE
-        # 1. Create the directory if it doesn't exist
-        # 2. Save the DataFrame to the CSV file
-        # 3. Return True if successful
+        # TODO: Implement this method to save data to a CSV file
+        # Make sure to handle errors appropriately
         pass
 
-class DatabaseDataSink(DataSink):
+
+class DatabaseLoader(Loader):
     """
-    Data sink that writes to a database.
-    
-    Attributes:
-        name (str): Name of the data sink
-        connection_string (str): Database connection string
-        table_name (str): Name of the table to write to
-        description (str): Description of the data sink
+    Loader for databases.
     """
     
-    def __init__(self, name, connection_string, table_name, description=""):
+    def __init__(self, name: str, connection_string: str, table_name: str, if_exists: str = 'replace'):
         """
-        Initialize a database data sink.
+        Initialize the database loader.
         
         Args:
-            name (str): Name of the data sink
-            connection_string (str): Database connection string
-            table_name (str): Name of the table to write to
-            description (str, optional): Description of the data sink. Defaults to "".
+            name: Name of the loader
+            connection_string: Connection string for the database
+            table_name: Name of the table to load data into
+            if_exists: Action to take if the table already exists ('replace', 'append', or 'fail')
         """
-        super().__init__(name, description)
+        super().__init__(name)
         self.connection_string = connection_string
         self.table_name = table_name
-    
-    @timer_decorator
-    def save_data(self, df):
+        self.if_exists = if_exists
+        
+    def load(self, data: pd.DataFrame) -> bool:
         """
-        Save the data to a database table.
+        Load data to a database table.
         
         Args:
-            df (pandas.DataFrame): DataFrame to save
+            data: Data to load
             
         Returns:
-            bool: True if the data was saved successfully
+            True if the loading was successful, False otherwise
         """
-        # YOUR CODE HERE
-        # 1. Connect to the database
-        # 2. Write the DataFrame to the table
-        # 3. Return True if successful
-        # Note: For this exercise, you can simulate this by logging the action
+        # TODO: Implement this method to save data to a database
+        # Make sure to handle errors appropriately
         pass
 
-class JSONDataSink(DataSink):
+
+class Cache:
     """
-    Data sink that writes to a JSON file.
-    
-    Attributes:
-        name (str): Name of the data sink
-        file_path (str): Path to the JSON file
-        description (str): Description of the data sink
+    Cache for storing intermediate results in the pipeline.
     """
     
-    def __init__(self, name, file_path, description=""):
+    def __init__(self, cache_dir: str = '.cache'):
         """
-        Initialize a JSON data sink.
+        Initialize the cache.
         
         Args:
-            name (str): Name of the data sink
-            file_path (str): Path to the JSON file
-            description (str, optional): Description of the data sink. Defaults to "".
+            cache_dir: Directory to store cache files
         """
-        super().__init__(name, description)
-        self.file_path = file_path
-    
-    @timer_decorator
-    def save_data(self, df):
+        self.cache_dir = cache_dir
+        os.makedirs(cache_dir, exist_ok=True)
+        
+    def _get_cache_key(self, data: pd.DataFrame, step_name: str) -> str:
         """
-        Save the data to a JSON file.
+        Generate a cache key based on the data and step name.
         
         Args:
-            df (pandas.DataFrame): DataFrame to save
+            data: Input data
+            step_name: Name of the processing step
             
         Returns:
-            bool: True if the data was saved successfully
+            Cache key
         """
-        # YOUR CODE HERE
-        # 1. Create the directory if it doesn't exist
-        # 2. Convert the DataFrame to JSON
-        # 3. Save the JSON to the file
-        # 4. Return True if successful
+        # TODO: Implement this method to generate a unique cache key
+        # Consider using a hash of the data and step name
         pass
+    
+    def get(self, data: pd.DataFrame, step_name: str) -> Optional[pd.DataFrame]:
+        """
+        Retrieve data from the cache.
+        
+        Args:
+            data: Input data
+            step_name: Name of the processing step
+            
+        Returns:
+            Cached data or None if not found
+        """
+        # TODO: Implement this method to retrieve data from the cache
+        # Return None if the data is not in the cache
+        pass
+    
+    def set(self, input_data: pd.DataFrame, output_data: pd.DataFrame, step_name: str) -> None:
+        """
+        Store data in the cache.
+        
+        Args:
+            input_data: Input data
+            output_data: Output data to cache
+            step_name: Name of the processing step
+        """
+        # TODO: Implement this method to store data in the cache
+        pass
+
 
 class Pipeline:
     """
-    Data processing pipeline.
-    
-    Attributes:
-        name (str): Name of the pipeline
-        description (str): Description of the pipeline
-        sources (list): List of data sources
-        transformers (list): List of data transformers
-        sinks (list): List of data sinks
+    Data processing pipeline for soccer analytics.
     """
     
-    def __init__(self, name, description=""):
+    def __init__(self, name: str, use_cache: bool = True):
         """
-        Initialize a pipeline.
+        Initialize the pipeline.
         
         Args:
-            name (str): Name of the pipeline
-            description (str, optional): Description of the pipeline. Defaults to "".
+            name: Name of the pipeline
+            use_cache: Whether to use caching
         """
         self.name = name
-        self.description = description
-        self.sources = []
-        self.transformers = []
-        self.sinks = []
-    
-    def add_source(self, source):
+        self.steps = []
+        self.use_cache = use_cache
+        self.cache = Cache() if use_cache else None
+        
+    def add_source(self, source: DataSource) -> 'Pipeline':
         """
         Add a data source to the pipeline.
         
         Args:
-            source (DataSource): Data source to add
+            source: The data source to add
             
         Returns:
-            Pipeline: Self for method chaining
+            The pipeline instance for method chaining
         """
-        self.sources.append(source)
+        self.steps.append(('source', source))
         return self
     
-    def add_transformer(self, transformer):
+    def add_transformer(self, transformer: Transformer) -> 'Pipeline':
         """
-        Add a data transformer to the pipeline.
+        Add a transformer to the pipeline.
         
         Args:
-            transformer (DataTransformer): Data transformer to add
+            transformer: The transformer to add
             
         Returns:
-            Pipeline: Self for method chaining
+            The pipeline instance for method chaining
         """
-        self.transformers.append(transformer)
+        self.steps.append(('transformer', transformer))
         return self
     
-    def add_sink(self, sink):
+    def add_loader(self, loader: Loader) -> 'Pipeline':
         """
-        Add a data sink to the pipeline.
+        Add a loader to the pipeline.
         
         Args:
-            sink (DataSink): Data sink to add
+            loader: The loader to add
             
         Returns:
-            Pipeline: Self for method chaining
+            The pipeline instance for method chaining
         """
-        self.sinks.append(sink)
+        self.steps.append(('loader', loader))
         return self
     
-    @timer_decorator
-    def run(self):
+    def run(self) -> Any:
         """
         Run the pipeline.
         
         Returns:
-            dict: Dictionary containing the results of the pipeline run
+            Result of the pipeline execution
         """
-        results = {
-            'start_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'pipeline_name': self.name,
-            'sources': [],
-            'transformers': [],
-            'sinks': [],
-            'end_time': None,
-            'success': False
-        }
-        
-        try:
-            # Process each data source
-            all_data = []
-            for source in self.sources:
-                logger.info(f"Getting data from source: {source.name}")
-                df = source.get_data()
-                all_data.append(df)
-                results['sources'].append({
-                    'name': source.name,
-                    'records': len(df),
-                    'columns': df.columns.tolist()
-                })
-            
-            # Combine data from all sources
-            if len(all_data) == 1:
-                df = all_data[0]
-            else:
-                # YOUR CODE HERE
-                # Implement logic to combine multiple DataFrames
-                # For example, you could concatenate them, merge them, etc.
-                pass
-            
-            # Apply transformers in sequence
-            for transformer in self.transformers:
-                logger.info(f"Applying transformer: {transformer.name}")
-                df = transformer.transform(df)
-                results['transformers'].append({
-                    'name': transformer.name,
-                    'records_after': len(df),
-                    'columns_after': df.columns.tolist()
-                })
-            
-            # Save to all sinks
-            for sink in self.sinks:
-                logger.info(f"Saving data to sink: {sink.name}")
-                success = sink.save_data(df)
-                results['sinks'].append({
-                    'name': sink.name,
-                    'success': success
-                })
-            
-            results['success'] = True
-            logger.info("Pipeline run completed successfully")
-        
-        except Exception as e:
-            logger.error(f"Pipeline run failed: {str(e)}")
-            results['error'] = str(e)
-        
-        results['end_time'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        return results
+        # TODO: Implement this method to run the pipeline
+        # Extract data from the source, apply transformations, and load the result
+        # Use caching if enabled
+        pass
 
-def create_sample_pipeline():
+
+def create_player_stats_pipeline(csv_file_path: str, output_file_path: str) -> Pipeline:
     """
-    Create a sample data pipeline for soccer statistics.
+    Create a pipeline for processing player statistics.
     
+    Args:
+        csv_file_path: Path to the CSV file with player data
+        output_file_path: Path to save the processed data
+        
     Returns:
-        Pipeline: The sample pipeline
+        A configured pipeline instance
     """
-    # Create the pipeline
-    pipeline = Pipeline(
-        name="Soccer Statistics Pipeline",
-        description="Pipeline for processing and analyzing soccer player statistics"
-    )
+    # TODO: Implement this function to create a player stats pipeline
+    # Create appropriate data sources, transformers, and loaders
+    pass
+
+
+def create_team_stats_pipeline(csv_file_path: str, output_file_path: str) -> Pipeline:
+    """
+    Create a pipeline for processing team statistics.
     
-    # Add data sources
-    # For this example, we'll use the sample player data from pandas_analysis.py
-    pipeline.add_source(
-        CSVDataSource(
-            name="Player Data",
-            file_path="data/player_data.csv",
-            description="Sample player statistics data"
-        )
-    )
+    Args:
+        csv_file_path: Path to the CSV file with team data
+        output_file_path: Path to save the processed data
+        
+    Returns:
+        A configured pipeline instance
+    """
+    # TODO: Implement this function to create a team stats pipeline
+    # Create appropriate data sources, transformers, and loaders
+    pass
+
+
+def create_match_stats_pipeline(csv_file_path: str, output_file_path: str) -> Pipeline:
+    """
+    Create a pipeline for processing match statistics.
     
-    # Add transformers
-    # 1. Cleaning transformer to handle missing values and drop unnecessary columns
-    pipeline.add_transformer(
-        CleaningTransformer(
-            name="Data Cleaning",
-            columns_to_drop=[],  # No columns to drop in this example
-            columns_to_fill={
-                'goals': 0,
-                'assists': 0,
-                'shots': 0,
-                'shots_on_goal': 0
-            }
-        )
-    )
-    
-    # 2. Feature engineering transformer to create derived metrics
-    pipeline.add_transformer(
-        FeatureEngineeringTransformer(
-            name="Feature Engineering",
-            feature_definitions={
-                'goals_per_90': 'goals * 90 / minutes',
-                'assists_per_90': 'assists * 90 / minutes',
-                'shots_per_90': 'shots * 90 / minutes',
-                'shot_accuracy': 'shots_on_goal / shots',
-                'goal_conversion': 'goals / shots',
-                'efficiency_score': '(goals * 3 + assists * 2) / games_played'
-            }
-        )
-    )
-    
-    # 3. Aggregation transformer to create team-level statistics
-    pipeline.add_transformer(
-        AggregationTransformer(
-            name="Team Aggregation",
-            group_by_columns=['team'],
-            aggregations={
-                'goals': ['sum', 'mean'],
-                'assists': ['sum', 'mean'],
-                'goals_per_90': 'mean',
-                'assists_per_90': 'mean',
-                'efficiency_score': 'mean',
-                'games_played': 'sum'
-            }
-        )
-    )
-    
-    # Add data sinks
-    pipeline.add_sink(
-        CSVDataSink(
-            name="Team Stats CSV",
-            file_path="data/outputs/team_stats.csv"
-        )
-    )
-    
-    pipeline.add_sink(
-        JSONDataSink(
-            name="Team Stats JSON",
-            file_path="data/outputs/team_stats.json"
-        )
-    )
-    
-    return pipeline
+    Args:
+        csv_file_path: Path to the CSV file with match data
+        output_file_path: Path to save the processed data
+        
+    Returns:
+        A configured pipeline instance
+    """
+    # TODO: Implement this function to create a match stats pipeline
+    # Create appropriate data sources, transformers, and loaders
+    pass
+
 
 def main():
-    """Run the data pipeline."""
-    print("Data Pipeline Development")
+    """
+    Main function to demonstrate pipeline capabilities.
+    """
+    # Example file paths (replace with actual paths in a real scenario)
+    player_data_path = "data/player_stats.csv"  # Placeholder path
+    team_data_path = "data/team_stats.csv"      # Placeholder path
+    match_data_path = "data/match_stats.csv"    # Placeholder path
     
-    # Check if sample data exists, if not, suggest running pandas_analysis.py first
-    if not os.path.exists('data/player_data.csv'):
-        print("Sample data not found. Please run pandas_analysis.py first to generate the sample data.")
-        return
+    output_dir = "processed_data"
+    os.makedirs(output_dir, exist_ok=True)
     
-    # Create and run the pipeline
-    print("\nCreating and running the sample pipeline...")
-    pipeline = create_sample_pipeline()
-    results = pipeline.run()
+    player_output_path = os.path.join(output_dir, "processed_player_stats.csv")
+    team_output_path = os.path.join(output_dir, "processed_team_stats.csv")
+    match_output_path = os.path.join(output_dir, "processed_match_stats.csv")
     
-    # Save the pipeline results
-    results_file = "data/outputs/pipeline_results.json"
-    os.makedirs(os.path.dirname(results_file), exist_ok=True)
-    with open(results_file, 'w') as f:
-        json.dump(results, f, indent=2)
+    # Create example data if the files don't exist
+    if not os.path.exists(player_data_path):
+        # Create directory if it doesn't exist
+        os.makedirs(os.path.dirname(player_data_path), exist_ok=True)
+        
+        # Create example player data
+        player_data = pd.DataFrame({
+            'player_id': range(1, 51),
+            'first_name': [f'Player{i}' for i in range(1, 51)],
+            'last_name': [f'Lastname{i}' for i in range(1, 51)],
+            'position': np.random.choice(['Forward', 'Midfielder', 'Defender', 'Goalkeeper'], 50),
+            'team_id': np.random.randint(1, 11, 50),
+            'age': np.random.randint(18, 35, 50),
+            'goals': np.random.randint(0, 20, 50),
+            'assists': np.random.randint(0, 15, 50),
+            'minutes_played': np.random.randint(0, 3000, 50)
+        })
+        
+        # Introduce some missing values and errors for cleaning
+        player_data.loc[np.random.choice(player_data.index, 5), 'goals'] = np.nan
+        player_data.loc[np.random.choice(player_data.index, 5), 'assists'] = np.nan
+        player_data.loc[np.random.choice(player_data.index, 3), 'age'] = -1  # Invalid age
+        
+        # Save to CSV
+        player_data.to_csv(player_data_path, index=False)
     
-    # Print a summary of the results
-    print("\nPipeline run summary:")
-    print(f"Pipeline: {results['pipeline_name']}")
-    print(f"Start time: {results['start_time']}")
-    print(f"End time: {results['end_time']}")
-    print(f"Success: {results['success']}")
+    # Create example team data if the file doesn't exist
+    if not os.path.exists(team_data_path):
+        os.makedirs(os.path.dirname(team_data_path), exist_ok=True)
+        
+        team_data = pd.DataFrame({
+            'team_id': range(1, 11),
+            'team_name': [f'Team{i}' for i in range(1, 11)],
+            'wins': np.random.randint(5, 25, 10),
+            'losses': np.random.randint(5, 20, 10),
+            'draws': np.random.randint(0, 10, 10)
+        })
+        
+        # Introduce some errors for cleaning
+        team_data.loc[np.random.choice(team_data.index, 2), 'wins'] = -1  # Invalid wins
+        
+        # Save to CSV
+        team_data.to_csv(team_data_path, index=False)
     
-    print("\nSources processed:")
-    for source in results['sources']:
-        print(f"- {source['name']}: {source['records']} records, {len(source['columns'])} columns")
+    # Create example match data if the file doesn't exist
+    if not os.path.exists(match_data_path):
+        os.makedirs(os.path.dirname(match_data_path), exist_ok=True)
+        
+        match_data = pd.DataFrame({
+            'match_id': range(1, 101),
+            'home_team_id': np.random.randint(1, 11, 100),
+            'away_team_id': np.random.randint(1, 11, 100),
+            'home_score': np.random.randint(0, 5, 100),
+            'away_score': np.random.randint(0, 5, 100),
+            'date': pd.date_range(start='2023-01-01', periods=100)
+        })
+        
+        # Introduce some missing values and errors for cleaning
+        match_data.loc[np.random.choice(match_data.index, 5), 'home_score'] = np.nan
+        match_data.loc[np.random.choice(match_data.index, 5), 'away_score'] = np.nan
+        
+        # Save to CSV
+        match_data.to_csv(match_data_path, index=False)
     
-    print("\nTransformers applied:")
-    for transformer in results['transformers']:
-        print(f"- {transformer['name']}: {transformer['records_after']} records after transformation")
+    # TODO: Implement pipeline execution
+    # 1. Create player stats pipeline and run it
+    # 2. Create team stats pipeline and run it
+    # 3. Create match stats pipeline and run it
     
-    print("\nData saved to sinks:")
-    for sink in results['sinks']:
-        status = "Success" if sink['success'] else "Failed"
-        print(f"- {sink['name']}: {status}")
-    
-    print(f"\nDetailed results saved to {results_file}")
+    print("Data pipeline processing completed!")
+
 
 if __name__ == "__main__":
     main()

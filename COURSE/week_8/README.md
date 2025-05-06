@@ -1,12 +1,24 @@
 # Week 8: Data Visualization & Capstone Planning
 
+## Overview
+This week focuses on creating effective visualizations for soccer analytics data and beginning your capstone project planning. You'll learn different visualization techniques across multiple libraries, design interactive dashboards, and create the blueprint for your NCAA soccer analytics capstone project.
+
+## Skills & Difficulty Chart
+
+| Challenge | Main Skills | Difficulty | Application to Capstone |
+|-----------|-------------|------------|-------------------------|
+| 1. Matplotlib Fundamentals | Basic Plotting, Customization | ⭐⭐☆☆☆ | Create static visualizations for soccer metrics |
+| 2. Seaborn Statistical Visualization | Statistical Plots, Relationships | ⭐⭐⭐☆☆ | Visualize distributions and correlations in soccer data |
+| 3. Interactive Plotly Dashboards | Interactive Charts, Dashboards | ⭐⭐⭐☆☆ | Build interactive interfaces for exploring statistics |
+| 4. Soccer Analytics Visualization | Soccer-specific Plots, Pitch Maps | ⭐⭐⭐⭐☆ | Create specialized visualizations for match analysis |
+
 ## Learning Objectives
-- Create effective data visualizations
-- Master various visualization libraries
-- Design interactive dashboards
-- Implement data storytelling techniques
-- Create meaningful visual representations of soccer analytics
-- Begin planning your capstone project
+- Create effective data visualizations for soccer analytics
+- Master various visualization libraries (Matplotlib, Seaborn, Plotly)
+- Design interactive dashboards for exploring soccer statistics
+- Implement data storytelling techniques for communicating insights
+- Create meaningful visual representations of player and team performance
+- Begin planning your capstone project with a comprehensive blueprint
 
 ## Required Course Videos
 Complete the following course videos before starting this week's assignments:
@@ -33,25 +45,29 @@ Complete the following course videos before starting this week's assignments:
 
 ## Assignments
 
-### 1. Matplotlib Fundamentals
+### 1. Matplotlib Fundamentals 📊
 - Complete visualization tasks in `matplotlib_fundamentals.py`
-- Create various plot types (line, bar, scatter, histogram)
-- Customize and style visualizations
+- Create various plot types (line, bar, scatter, histogram) for soccer data
+- Customize and style visualizations for clear communication
+- See [detailed challenge README](challenges/matplotlib_fundamentals_README.md)
 
-### 2. Seaborn Statistical Visualization
+### 2. Seaborn Statistical Visualization 📈
 - Implement statistical visualizations in `seaborn_visualization.py`
-- Create distribution plots, heatmaps, and pair plots
-- Visualize relationships between variables
+- Create distribution plots, heatmaps, and pair plots for player statistics
+- Visualize relationships between different performance metrics
+- See [detailed challenge README](challenges/seaborn_visualization_README.md)
 
-### 3. Interactive Plotly Dashboards
+### 3. Interactive Plotly Dashboards 🖥️
 - Create interactive visualizations in `plotly_dashboard.py`
-- Implement hovering, zooming, and filtering
-- Build multi-panel dashboards
+- Implement hovering, zooming, and filtering for soccer data exploration
+- Build multi-panel dashboards for comprehensive team analysis
+- See [detailed challenge README](challenges/plotly_dashboard_README.md)
 
-### 4. Soccer Analytics Visualization
+### 4. Soccer Analytics Visualization ⚽
 - Create soccer-specific visualizations in `soccer_visualization.py`
 - Implement shot maps, pass networks, and player comparisons
 - Design informative visual representations of player performance
+- See [detailed challenge README](challenges/soccer_visualization_README.md)
 
 ## Project Milestone: Interactive Dashboard & Capstone Planning
 
@@ -92,6 +108,10 @@ Submit your completed capstone plan in your personal project folder as `capstone
 - [Effective Dashboard Design](https://www.tableau.com/learn/articles/dashboard-design-principles)
 - [System Architecture Diagrams](https://www.lucidchart.com/pages/templates/software-design)
 - [UI Wireframing Tools](https://www.figma.com/)
+- [Soccer Visualization Examples](https://www.fcpython.com/blog/introduction-to-visualising-data-football-in-python)
+- [Sports Dashboard Design](https://www.datapine.com/blog/sports-analytics-dashboards-examples/)
+- [Soccer Analytics Metrics](https://statsbomb.com/articles/soccer/the-theory-of-soccer-analytics/)
+- [StatsBomb Open Data](https://github.com/statsbomb/open-data)
 
 ## Submission
 Submit your completed work following the standard pull request process described in the Getting Started guide. Be sure to include both your interactive dashboard implementation and your capstone project plan.

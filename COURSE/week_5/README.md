@@ -1,5 +1,17 @@
 # Week 5: Web Development & Web Scraping
 
+## Overview
+This week focuses on web development fundamentals and web scraping techniques, essential skills for collecting and presenting soccer analytics data. You'll learn to create web pages, extract data from sports websites, and build interactive web applications to display your findings.
+
+## Skills & Difficulty Chart
+
+| Challenge | Main Skills | Difficulty | Application to Capstone |
+|-----------|-------------|------------|-------------------------|
+| 1. Web Page Creation | HTML, CSS, Responsive Design | ⭐⭐☆☆☆ | Create appealing UI for player stats |
+| 2. Web Scraper Development | Beautiful Soup, HTML Parsing | ⭐⭐⭐☆☆ | Collect player data from NCAA sites |
+| 3. Flask Web Application | Flask, Templates, Routing | ⭐⭐⭐☆☆ | Build interactive dashboard for data |
+| 4. Dynamic Content Scraping | Selenium, JavaScript Content | ⭐⭐⭐⭐☆ | Handle complex NCAA stats pages |
+
 ## Learning Objectives
 - Understand HTML, CSS, and basic web structure
 - Build interactive web applications with Flask
@@ -37,25 +49,29 @@ Complete the following course videos before starting this week's assignments:
 
 ## Assignments
 
-### 1. Web Page Creation
-- Create a simple web page in `webpage.html`
+### 1. Web Page Creation 🎯
+- Create a simple soccer analytics web page in `webpage.html`
 - Apply CSS styling in `styles.css`
 - Implement responsive design principles
+- See [detailed challenge README](challenges/webpage_README.md)
 
-### 2. Web Scraper Development
-- Create a web scraper in `web_scraper.py`
-- Target a sports statistics website (demo site provided)
+### 2. Web Scraper Development ⚽
+- Create a web scraper in `web_scraper.py` 
+- Target a soccer statistics website (demo site provided)
 - Extract player and team information
+- See [detailed challenge README](challenges/web_scraper_README.md)
 
-### 3. Flask Web Application
+### 3. Flask Web Application 🏟️
 - Build a Flask web application in `flask_app.py`
-- Create routes for displaying and managing data
+- Create routes for displaying and managing soccer data
 - Implement templates and form handling
+- See [detailed challenge README](challenges/flask_app_README.md)
 
-### 4. Dynamic Content Scraping
+### 4. Dynamic Content Scraping 🔄
 - Implement advanced scraping in `dynamic_scraper.py`
-- Handle JavaScript-rendered content
+- Handle JavaScript-rendered soccer stats content
 - Extract data from interactive elements
+- See [detailed challenge README](challenges/dynamic_scraper_README.md)
 
 ## Project Milestone: Web Scraper Implementation
 
@@ -75,6 +91,9 @@ Focus on implementing this in the `PROJECT/src/scraping/` directory, building on
 - [Flask Template Documentation](https://flask.palletsprojects.com/en/2.0.x/tutorial/templates/)
 - [Web Scraping Ethics & Best Practices](https://www.scrapehero.com/how-to-prevent-getting-blacklisted-while-scraping/)
 - [HTTP Request Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)
+- [NCAA Soccer Statistics](https://stats.ncaa.org/rankings/DIV2) (Reference for actual data)
+- [Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world)
+- [Selenium Documentation](https://selenium-python.readthedocs.io/)
 
 ## Submission
 Submit your completed work following the standard pull request process described in the Getting Started guide.

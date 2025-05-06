@@ -1,10 +1,22 @@
 # Week 6: Advanced Web & Databases
 
+## Overview
+This week focuses on database integration and advanced web development concepts essential for building a comprehensive soccer analytics platform. You'll learn how to design and implement database schemas, connect Python applications to databases, and build advanced web features with authentication and dynamic forms.
+
+## Skills & Difficulty Chart
+
+| Challenge | Main Skills | Difficulty | Application to Capstone |
+|-----------|-------------|------------|-------------------------|
+| 1. Database Schema Design | Database Modeling, SQL | ⭐⭐⭐☆☆ | Create data structure for soccer stats |
+| 2. SQLAlchemy ORM Implementation | ORM, Python Classes | ⭐⭐⭐☆☆ | Connect Python code to database |
+| 3. Flask-WTF Forms | Web Forms, Validation | ⭐⭐⭐⭐☆ | Create data entry for soccer statistics |
+| 4. Advanced Flask Application | Auth, CRUD Operations | ⭐⭐⭐⭐☆ | Build secure analytics platform |
+
 ## Learning Objectives
-- Design and implement database schemas
-- Connect Python applications to databases
+- Design and implement database schemas for soccer analytics
+- Connect Python applications to databases using ORM
 - Build advanced web applications with authentication
-- Create dynamic web forms and interfaces
+- Create dynamic web forms and interfaces for data entry
 - Implement CRUD operations in web applications
 
 ## Required Course Videos
@@ -37,25 +49,29 @@ Complete the following course videos before starting this week's assignments:
 
 ## Assignments
 
-### 1. Database Schema Design
+### 1. Database Schema Design 📊
 - Design a database schema in `database_schema.py`
-- Create tables for players, teams, matches, and statistics
+- Create tables for soccer players, teams, matches, and statistics
 - Implement relationships between tables
+- See [detailed challenge README](challenges/database_schema_README.md)
 
-### 2. SQLAlchemy ORM Implementation
+### 2. SQLAlchemy ORM Implementation 🔄
 - Implement the ORM models in `orm_models.py`
-- Create classes for database tables
+- Create classes for soccer database tables
 - Add CRUD operations for each model
+- See [detailed challenge README](challenges/orm_models_README.md)
 
-### 3. Flask-WTF Forms
+### 3. Flask-WTF Forms 📝
 - Create forms with Flask-WTF in `flask_forms.py`
 - Implement validation and error handling
-- Connect forms to database operations
+- Connect forms to soccer database operations
+- See [detailed challenge README](challenges/flask_forms_README.md)
 
-### 4. Advanced Flask Application
+### 4. Advanced Flask Application 🔐
 - Build an advanced Flask app in `advanced_flask_app.py`
-- Include authentication and user management
+- Include authentication for secure access to soccer data
 - Implement CRUD operations via web interface
+- See [detailed challenge README](challenges/advanced_flask_app_README.md)
 
 ## Project Milestone: Database Integration
 
@@ -75,6 +91,10 @@ Work on this in the `PROJECT/src/` directory, adding appropriate database models
 - [Flask-WTF Documentation](https://flask-wtf.readthedocs.io/)
 - [Bootstrap Documentation](https://getbootstrap.com/docs/)
 - [Database Design Principles](https://www.sqlshack.com/database-design-principles/)
+- [Entity-Relationship Diagrams Tutorial](https://www.lucidchart.com/pages/er-diagrams)
+- [Flask Login Documentation](https://flask-login.readthedocs.io/en/latest/)
+- [Sports Database Design Examples](https://www.vertabelo.com/blog/a-sports-data-model/)
+- [NCAA Sports Database Schema Examples](https://data.world/sports/ncaa-football-statistics)
 
 ## Submission
 Submit your completed work following the standard pull request process described in the Getting Started guide.

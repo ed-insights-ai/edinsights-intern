@@ -1,11 +1,36 @@
 # Week 1: Python Fundamentals for Soccer Analytics
 
+## Audio Resource
+
+To enhance your learning experience, listen to the following audio resource:
+
+<audio controls>
+  <source src="../../media/week1.wav" type="audio/wav">
+  Your browser does not support the audio element.
+</audio>
+
 ## Learning Objectives
 - Understand basic Python syntax and data types
 - Master control structures (if/else, loops)
 - Work with functions and modules
 - Use Python's built-in data structures (lists, dictionaries, tuples, sets)
 - Apply Python concepts to soccer data analysis problems
+
+## Skills & Difficulty Levels
+
+| Skill | Difficulty | Description |
+|-------|------------|-------------|
+| Variables & Types | ⭐ Beginner | Creating variables, understanding data types, type conversion |
+| String Operations | ⭐ Beginner | String manipulation, concatenation, formatting, methods |
+| Basic Calculations | ⭐ Beginner | Arithmetic operations, simple formulas, operator precedence |
+| Conditional Logic | ⭐⭐ Beginner-Intermediate | If/else statements, boolean operations, comparison operators |
+| Loops | ⭐⭐ Beginner-Intermediate | For loops, while loops, nested loops, loop control |
+| Functions | ⭐⭐ Beginner-Intermediate | Creating functions, parameters, return values, docstrings |
+| Lists | ⭐⭐ Beginner-Intermediate | Creating, accessing, modifying lists, list methods |
+| Dictionaries | ⭐⭐⭐ Intermediate | Key-value pairs, dictionary operations, nested dictionaries |
+| Advanced Collections | ⭐⭐⭐ Intermediate | Sets, tuples, dictionary comprehensions |
+| Nested Data Structures | ⭐⭐⭐ Intermediate | Combining lists and dictionaries, accessing nested elements |
+| Variable Arguments | ⭐⭐⭐ Intermediate | Functions with variable number of arguments (*args) |
 
 ## Required Course Videos
 Complete the following course videos before starting this week's challenges:
@@ -34,29 +59,35 @@ Complete the following course videos before starting this week's challenges:
    - Function definition and calling
    - Parameters and return values
 
+
+
 ## Coding Challenges
 
 Each challenge has its own README with guidance and hints. Don't peek at the solutions - try to solve them yourself first!
 
 ### Challenge 1: Soccer Stats Fundamentals
+- **Difficulty**: ⭐ to ⭐⭐ (Beginner to Beginner-Intermediate)
 - File: `python_basics.py`
 - README: `challenges/python_basics_README.md`
 - Practice with variables, operators, and data types in a soccer context
 - Focus on basic calculations and string operations used in soccer analytics
 
 ### Challenge 2: Game Flow Control
+- **Difficulty**: ⭐⭐ (Beginner-Intermediate)
 - File: `control_flow.py`
 - README: `challenges/control_flow_README.md`
 - Implement conditionals and loops to model soccer match scenarios
 - Create logic to analyze soccer match events and patterns
 
 ### Challenge 3: Soccer Data Structures
+- **Difficulty**: ⭐⭐ to ⭐⭐⭐ (Beginner-Intermediate to Intermediate)
 - File: `data_structures.py`
 - README: `challenges/data_structures_README.md`
 - Master Python's data structures for organizing soccer data
 - Implement operations for finding, filtering, and grouping player and match data
 
 ### Challenge 4: Soccer Analytics Functions
+- **Difficulty**: ⭐⭐⭐ (Intermediate)
 - File: `functions.py`
 - README: `challenges/functions_README.md`
 - Build powerful functions for soccer data processing and analysis
@@ -101,6 +132,17 @@ Save this as `data_collection_plan.md` in your personal project folder.
 3. Complete the coding challenges one by one
 4. Apply what you've learned to create your data collection plan
 5. Commit and push your solutions following the standard pull request process
+
+## Challenge Progression
+
+The challenges are designed with progressive difficulty:
+
+1. **Challenge 1**: Start here to get comfortable with basic Python operations in a soccer context
+2. **Challenge 2**: Build on those basics with control flow for match analysis
+3. **Challenge 3**: Learn to organize soccer data with appropriate data structures
+4. **Challenge 4**: Combine everything into analytics functions for your toolkit
+
+If you're finding a challenge difficult, review the pseudocode in the README and break the problem down into smaller steps.
 
 ## Resources
 - [Python Official Tutorial](https://docs.python.org/3/tutorial/)
