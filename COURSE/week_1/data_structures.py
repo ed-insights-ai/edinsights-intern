@@ -21,8 +21,13 @@ def unique_goal_scorers(match_report):
         >>> unique_goal_scorers(['Messi', 'Ronaldo', 'Messi', 'Neymar', 'Ronaldo'])
         ['Messi', 'Ronaldo', 'Neymar']
     """
-    # YOUR CODE HERE
-    pass
+    seen = set()
+    unique_scorers = []
+    for scorer in match_report:
+        if scorer not in seen:
+            seen.add(scorer)
+            unique_scorers.append(scorer)
+    return unique_scorers
 
 def merge_player_stats(season1_stats, season2_stats):
     """
@@ -43,8 +48,9 @@ def merge_player_stats(season1_stats, season2_stats):
         ... )
         {'Messi': {'goals': 25, 'assists': 15}, 'Ronaldo': {'goals': 28, 'assists': 5}}
     """
-    # YOUR CODE HERE
-    pass
+    merged_stats = season1_stats.copy()
+    merged_stats.update(season2_stats)
+    return merged_stats
 
 def find_top_scorer(match_goals):
     """
@@ -61,8 +67,9 @@ def find_top_scorer(match_goals):
         >>> find_top_scorer(['Messi', 'Ronaldo', 'Messi', 'Neymar', 'Ronaldo', 'Messi'])
         'Messi'
     """
-    # YOUR CODE HERE
-    pass
+    from collections import Counter
+    goal_counts = Counter(match_goals)
+    return max(goal_counts, key=goal_counts.get)
 
 def group_players_by_position(players, position_key):
     """
@@ -92,8 +99,13 @@ def group_players_by_position(players, position_key):
             'Forward': [{'name': 'Salah', 'position': 'Forward'}]
         }
     """
-    # YOUR CODE HERE
-    pass
+    grouped = {}
+    for player in players:
+        position = player[position_key]
+        if position not in grouped:
+            grouped[position] = []
+        grouped[position].append(player)
+    return grouped
 
 def total_tournament_goals(tournament_data):
     """
@@ -124,8 +136,12 @@ def total_tournament_goals(tournament_data):
         >>> total_tournament_goals(tournament_data)
         12
     """
-    # YOUR CODE HERE
-    pass
+    total_goals = 0
+    for item in tournament_data:
+        if isinstance(item, list):
+            for match in item:
+                total_goals += match[1]
+    return total_goals
 
 def main():
     """Run some examples to test your functions."""

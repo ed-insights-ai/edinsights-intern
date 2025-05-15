@@ -9,109 +9,68 @@ while introducing you to soccer match concepts.
 def goal_commentary(n):
     """
     Implement a soccer commentary generator based on goal patterns.
-    
-    For numbers 1 to n:
-    - If the number is divisible by 3, print "Goal!"
-    - If the number is divisible by 5, print "Save!"
-    - If the number is divisible by both 3 and 5, print "Spectacular Play!"
-    - Otherwise, print "Minute X" where X is the number itself
-    
-    Args:
-        n (int): Number of minutes to commentate
-        
-    Returns:
-        list: A list of commentary strings
-        
-    Example:
-        >>> goal_commentary(15)
-        ['Minute 1', 'Minute 2', 'Goal!', 'Minute 4', 'Save!', 'Goal!', 'Minute 7', 'Minute 8', 'Goal!', 'Save!', 'Minute 11', 'Goal!', 'Minute 13', 'Minute 14', 'Spectacular Play!']
     """
-    # YOUR CODE HERE
-    pass
+    commentary = []
+    for i in range(1, n + 1):
+        if i % 3 == 0 and i % 5 == 0:
+            commentary.append("Spectacular Play!")
+        elif i % 3 == 0:
+            commentary.append("Goal!")
+        elif i % 5 == 0:
+            commentary.append("Save!")
+        else:
+            commentary.append(f"Minute {i}")
+    return commentary
 
 def is_prime_jersey_number(number):
     """
-    Check if a jersey number is prime. This is often used to identify
-    'special' jersey numbers in soccer.
-    
-    A prime number is a natural number greater than 1 that is not a product
-    of two smaller natural numbers.
-    
-    Args:
-        number (int): The jersey number to check
-        
-    Returns:
-        bool: True if the jersey number is prime, False otherwise
-        
-    Example:
-        >>> is_prime_jersey_number(7)  # Many famous players wear 7
-        True
-        >>> is_prime_jersey_number(10)  # Classic number 10 is not prime
-        False
+    Check if a jersey number is prime.
     """
-    # YOUR CODE HERE
-    pass
+    if number <= 1:
+        return False
+    for i in range(2, int(number ** 0.5) + 1):
+        if number % i == 0:
+            return False
+    return True
 
 def find_season_extremes(match_scores):
     """
-    Find the highest and lowest scoring matches in a season without using built-in max/min functions.
-    
-    Args:
-        match_scores (list): A list of match scores (total goals scored in each match)
-        
-    Returns:
-        tuple: A tuple containing (highest_score, lowest_score)
-        
-    Example:
-        >>> find_season_extremes([2, 0, 5, 1, 3])
-        (5, 0)
+    Find the highest and lowest scoring matches in a season.
     """
-    # YOUR CODE HERE
-    pass
+    highest_score = match_scores[0]
+    lowest_score = match_scores[0]
+    for score in match_scores:
+        if score > highest_score:
+            highest_score = score
+        if score < lowest_score:
+            lowest_score = score
+    return highest_score, lowest_score
 
 def calculate_performance_tier(player_rating):
     """
     Convert a player's numerical rating to a performance tier.
-    
-    Rating scale:
-    - 90-100: 'World Class'
-    - 80-89: 'Elite'
-    - 70-79: 'Quality'
-    - 60-69: 'Average'
-    - Below 60: 'Development Prospect'
-    
-    Args:
-        player_rating (float): Numerical rating (0-100)
-        
-    Returns:
-        str: Performance tier
-        
-    Example:
-        >>> calculate_performance_tier(85)
-        'Elite'
     """
-    # YOUR CODE HERE
-    pass
+    if 90 <= player_rating <= 100:
+        return "World Class"
+    elif 80 <= player_rating < 90:
+        return "Elite"
+    elif 70 <= player_rating < 80:
+        return "Quality"
+    elif 60 <= player_rating < 70:
+        return "Average"
+    else:
+        return "Development Prospect"
 
 def cumulative_goal_difference(goal_differences):
     """
     Calculate the cumulative goal difference over a season.
-    
-    This helps track a team's performance trajectory throughout the season.
-    
-    Args:
-        goal_differences (list): List of goal differences for each match
-                                (positive for wins, negative for losses, 0 for draws)
-        
-    Returns:
-        list: Cumulative goal difference after each match
-        
-    Example:
-        >>> cumulative_goal_difference([1, -1, 2, 0, -2])
-        [1, 0, 2, 2, 0]  # Running total after each match
     """
-    # YOUR CODE HERE
-    pass
+    cumulative = []
+    total = 0
+    for diff in goal_differences:
+        total += diff
+        cumulative.append(total)
+    return cumulative
 
 def main():
     """Run some examples to test your functions."""
