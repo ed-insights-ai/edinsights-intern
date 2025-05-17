@@ -107,7 +107,10 @@ def analyze_match_stats(team_stats, opponent_stats):
             - 'weaknesses': List of areas where opponent outperformed team
     """
     possession_difference = team_stats['possession'] - opponent_stats['possession']
-    shots_accuracy = round((team_stats['shots_on_target'] / team_stats['shots']) * 100, 2)
+    if team_stats['shots'] == 0:
+        shots_accuracy = 0
+    else:
+        shots_accuracy = round((team_stats['shots_on_target'] / team_stats['shots']) * 100, 2)
     passing_accuracy = round((team_stats['passes_completed'] / team_stats['passes']) * 100, 2)
 
     strengths = []
