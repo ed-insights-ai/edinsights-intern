@@ -21,8 +21,9 @@ def calculate_goals_per_game(goals, games_played):
         >>> calculate_goals_per_game([1, 0, 2, 1], 4)
         1.0
     """
-    # YOUR CODE HERE
-    pass
+    if games_played == 0:
+        return 0
+    return sum(goals) / games_played
 
 def reverse_team_name(team_name):
     """
@@ -38,8 +39,7 @@ def reverse_team_name(team_name):
         >>> reverse_team_name("Manchester United")
         "detinU retsehcnaM"
     """
-    # YOUR CODE HERE
-    pass
+    return team_name[::-1]
 
 def count_words_in_chant(chant):
     """
@@ -55,8 +55,7 @@ def count_words_in_chant(chant):
         >>> count_words_in_chant("You'll Never Walk Alone")
         4
     """
-    # YOUR CODE HERE
-    pass
+    return len(chant.split())
 
 def km_to_miles(kilometers):
     """
@@ -77,8 +76,7 @@ def km_to_miles(kilometers):
         >>> km_to_miles(10)
         6.21371
     """
-    # YOUR CODE HERE
-    pass
+    return kilometers * 0.621371
 
 def is_palindrome_formation(formation):
     """
@@ -100,8 +98,8 @@ def is_palindrome_formation(formation):
         >>> is_palindrome_formation("1-2-3-2-1")
         True
     """
-    # YOUR CODE HERE
-    pass
+    cleaned = formation.replace("-", "")
+    return cleaned == cleaned[::-1]
 
 def main():
     """Run some examples to test your functions."""
