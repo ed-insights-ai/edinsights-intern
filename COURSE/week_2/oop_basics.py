@@ -1,273 +1,407 @@
-"""
-OOP Fundamentals Exercise
-------------------------
-Complete the following classes according to the specified requirements.
-This exercise covers basic object-oriented programming concepts in Python.
-"""
-
-class BankAccount:
+class SoccerTeam:
     """
-    A class representing a simple bank account.
+    A class representing a soccer team with financial and performance tracking.
     
     Attributes:
-        account_number (str): The account number
-        owner_name (str): The name of the account owner
-        balance (float): The current balance
-        
-    Methods:
-        deposit(amount): Add the specified amount to the balance
-        withdraw(amount): Subtract the specified amount from the balance if funds are available
-        get_balance(): Return the current balance
-        add_interest(rate): Add interest to the balance based on the given rate
+        team_name (str): The name of the team
+        coach_name (str): The name of the team's coach
+        budget (float): The team's current budget
+        matches_played (int): Number of matches played
+        wins (int): Number of matches won
+        draws (int): Number of matches drawn
+        losses (int): Number of matches lost
+        goals_scored (int): Total goals scored by the team
+        goals_conceded (int): Total goals conceded by the team
     """
     
-    def __init__(self, account_number, owner_name, initial_balance=0):
+    def __init__(self, team_name, coach_name, initial_budget=0):
         """
-        Initialize a new BankAccount instance.
+        Initialize a new SoccerTeam instance.
         
         Args:
-            account_number (str): The account number
-            owner_name (str): The name of the account owner
-            initial_balance (float, optional): The starting balance. Defaults to 0.
+            team_name (str): The name of the team
+            coach_name (str): The name of the team's coach
+            initial_budget (float, optional): The starting budget. Defaults to 0.
+            
+        Raises:
+            ValueError: If initial_budget is negative
         """
-        # YOUR CODE HERE
-        pass
+        if initial_budget < 0:
+            raise ValueError("Initial budget cannot be negative")
+        
+        self.team_name = team_name
+        self.coach_name = coach_name
+        self.budget = initial_budget
+        
+        # Initialize performance tracking
+        self.matches_played = 0
+        self.wins = 0
+        self.draws = 0
+        self.losses = 0
+        self.goals_scored = 0
+        self.goals_conceded = 0
     
-    def deposit(self, amount):
+    def add_funds(self, amount):
         """
-        Add the specified amount to the balance.
+        Add funds to the team's budget.
         
         Args:
-            amount (float): The amount to deposit
+            amount (float): The amount to add
             
         Returns:
-            float: The new balance
+            float: The new budget
             
         Raises:
             ValueError: If amount is negative
         """
-        # YOUR CODE HERE
-        pass
+        if amount < 0:
+            raise ValueError("Amount to add cannot be negative")
+        
+        self.budget += amount
+        return self.budget
     
-    def withdraw(self, amount):
+    def spend_funds(self, amount):
         """
-        Subtract the specified amount from the balance if funds are available.
+        Spend funds from the team's budget.
         
         Args:
-            amount (float): The amount to withdraw
+            amount (float): The amount to spend
             
         Returns:
-            float: The new balance
+            float: The new budget
             
         Raises:
-            ValueError: If amount is negative
-            ValueError: If insufficient funds
+            ValueError: If amount is negative or exceeds current budget
         """
-        # YOUR CODE HERE
-        pass
+        if amount < 0:
+            raise ValueError("Amount to spend cannot be negative")
+        if amount > self.budget:
+            raise ValueError("Insufficient funds")
+        
+        self.budget -= amount
+        return self.budget
     
     def get_balance(self):
         """
-        Return the current balance.
+        Get the current budget balance.
         
         Returns:
-            float: The current balance
+            float: The current budget
         """
-        # YOUR CODE HERE
-        pass
+        return self.budget
     
-    def add_interest(self, rate):
+    def record_match_result(self, goals_for, goals_against):
         """
-        Add interest to the balance.
+        Record the result of a match and update team statistics.
         
         Args:
-            rate (float): The interest rate as a decimal (e.g., 0.05 for 5%)
+            goals_for (int): Goals scored by this team
+            goals_against (int): Goals scored by the opponent
             
         Returns:
-            float: The new balance
+            dict: A dictionary with updated team stats
         """
-        # YOUR CODE HERE
-        pass
+        self.matches_played += 1
+        self.goals_scored += goals_for
+        self.goals_conceded += goals_against
+        
+        if goals_for > goals_against:
+            self.wins += 1
+        elif goals_for == goals_against:
+            self.draws += 1
+        else:
+            self.losses += 1
+        
+        return {
+            'matches_played': self.matches_played,
+            'wins': self.wins,
+            'draws': self.draws,
+            'losses': self.losses,
+            'goals_scored': self.goals_scored,
+            'goals_conceded': self.goals_conceded
+        }
 
 
-class Rectangle:
+class SoccerField:
     """
-    A class representing a rectangle.
+    A class representing a soccer field with specific dimensions and conditions.
     
     Attributes:
-        width (float): The width of the rectangle
-        height (float): The height of the rectangle
-        
-    Methods:
-        area(): Calculate the area of the rectangle
-        perimeter(): Calculate the perimeter of the rectangle
-        is_square(): Check if the rectangle is a square
-        scale(factor): Scale the rectangle by the given factor
+        length (float): The length of the field in meters
+        width (float): The width of the field in meters
+        surface_type (str): The type of field surface (e.g., "grass", "artificial")
+        condition_rating (int): The field condition rating from 0-100
     """
     
-    def __init__(self, width, height):
+    def __init__(self, length, width, surface_type="grass"):
         """
-        Initialize a new Rectangle instance.
+        Initialize a new SoccerField instance.
         
         Args:
-            width (float): The width of the rectangle
-            height (float): The height of the rectangle
+            length (float): The length of the field in meters
+            width (float): The width of the field in meters
+            surface_type (str, optional): The type of field surface. Defaults to "grass".
             
         Raises:
-            ValueError: If width or height is not positive
+            ValueError: If length or width is not positive
         """
-        # YOUR CODE HERE
-        pass
+        if length <= 0 or width <= 0:
+            raise ValueError("Field dimensions must be positive")
+        
+        self.length = length
+        self.width = width
+        self.surface_type = surface_type
+        self.condition_rating = 100  # Perfect condition initially
     
     def area(self):
         """
-        Calculate the area of the rectangle.
+        Calculate the total area of the field.
         
         Returns:
-            float: The area (width * height)
+            float: The area in square meters
         """
-        # YOUR CODE HERE
-        pass
+        return self.length * self.width
     
-    def perimeter(self):
+    def penalty_box_area(self):
         """
-        Calculate the perimeter of the rectangle.
+        Calculate the area of the penalty box.
         
         Returns:
-            float: The perimeter (2 * width + 2 * height)
+            float: The penalty box area in square meters
         """
-        # YOUR CODE HERE
-        pass
+        # Standard penalty box is 16.5m x 40.3m
+        penalty_box_length = 16.5
+        penalty_box_width = 40.3
+        return penalty_box_length * penalty_box_width
     
-    def is_square(self):
+    def is_regulation_size(self):
         """
-        Check if the rectangle is a square.
+        Check if the field dimensions meet FIFA regulations.
         
         Returns:
-            bool: True if width equals height, False otherwise
+            bool: True if the field meets regulation size, False otherwise
         """
-        # YOUR CODE HERE
-        pass
+        # FIFA regulation field is between 90-120m length and 45-90m width
+        return (90 <= self.length <= 120) and (45 <= self.width <= 90)
     
-    def scale(self, factor):
+    def update_condition(self, weather_impact=-5):
         """
-        Scale the rectangle by the given factor.
+        Update the field condition rating based on weather or use.
         
         Args:
-            factor (float): The scaling factor
+            weather_impact (int, optional): The impact on the condition (-100 to 100). 
+                                         Defaults to -5 (slight deterioration).
             
         Returns:
-            Rectangle: A new Rectangle instance with scaled dimensions
-            
-        Raises:
-            ValueError: If factor is not positive
+            int: The new condition rating
         """
-        # YOUR CODE HERE
-        pass
+        self.condition_rating += weather_impact
+        
+        # Ensure condition stays within valid range
+        if self.condition_rating < 0:
+            self.condition_rating = 0
+        if self.condition_rating > 100:
+            self.condition_rating = 100
+            
+        return self.condition_rating
 
 
-class Student:
+class SoccerMatch:
     """
-    A class representing a student.
+    A class representing a soccer match with teams, score tracking, and match events.
     
     Attributes:
-        name (str): The student's name
-        student_id (str): The student's ID
-        courses (dict): Dictionary mapping course names to grades
-        
-    Methods:
-        add_course(course_name, grade): Add a course and grade to the student's record
-        get_gpa(): Calculate the student's GPA (average of all grades)
-        get_courses(): Get a list of all courses the student is taking
-        is_passing(): Check if the student is passing all courses (grade >= 60)
+        home_team (SoccerTeam): The home team
+        away_team (SoccerTeam): The away team
+        match_date (str): The date of the match
+        venue (str): The venue where the match is played
+        home_goals (int): Goals scored by the home team
+        away_goals (int): Goals scored by the away team
+        match_events (list): List of events during the match
+        is_completed (bool): Whether the match is completed
     """
     
-    def __init__(self, name, student_id):
+    def __init__(self, home_team, away_team, match_date, venue):
         """
-        Initialize a new Student instance.
+        Initialize a new SoccerMatch instance.
         
         Args:
-            name (str): The student's name
-            student_id (str): The student's ID
+            home_team (SoccerTeam): The home team
+            away_team (SoccerTeam): The away team
+            match_date (str): The date of the match
+            venue (str): The venue where the match is played
         """
-        # YOUR CODE HERE
-        pass
+        self.home_team = home_team
+        self.away_team = away_team
+        self.match_date = match_date
+        self.venue = venue
+        
+        self.home_goals = 0
+        self.away_goals = 0
+        self.match_events = []
+        self.is_completed = False
     
-    def add_course(self, course_name, grade):
+    def add_goal(self, team, player_name, minute):
         """
-        Add a course and grade to the student's record.
+        Record a goal in the match.
         
         Args:
-            course_name (str): The name of the course
-            grade (float): The grade received (0-100)
+            team (SoccerTeam): The team that scored
+            player_name (str): The name of the player who scored
+            minute (int): The minute when the goal was scored
+            
+        Returns:
+            tuple: The current score as (home_goals, away_goals)
             
         Raises:
-            ValueError: If grade is not between 0 and 100
+            ValueError: If the team is not playing in this match
         """
-        # YOUR CODE HERE
-        pass
+        if team != self.home_team and team != self.away_team:
+            raise ValueError("Team is not playing in this match")
+        
+        # Create event dictionary
+        goal_event = {
+            'team': team.team_name,
+            'player_name': player_name,
+            'minute': minute,
+            'event_type': 'goal'
+        }
+        
+        self.match_events.append(goal_event)
+        
+        # Update score
+        if team == self.home_team:
+            self.home_goals += 1
+        else:
+            self.away_goals += 1
+        
+        return (self.home_goals, self.away_goals)
     
-    def get_gpa(self):
+    def add_card(self, team, player_name, card_type, minute):
         """
-        Calculate the student's GPA (average of all grades).
+        Record a card given in the match.
+        
+        Args:
+            team (SoccerTeam): The team of the player who received the card
+            player_name (str): The name of the player who received the card
+            card_type (str): The type of card ("yellow" or "red")
+            minute (int): The minute when the card was given
+            
+        Returns:
+            list: The updated match events list
+            
+        Raises:
+            ValueError: If the card type is invalid or the team is not playing
+        """
+        if team != self.home_team and team != self.away_team:
+            raise ValueError("Team is not playing in this match")
+        
+        if card_type not in ["yellow", "red"]:
+            raise ValueError("Card type must be 'yellow' or 'red'")
+        
+        # Create event dictionary
+        card_event = {
+            'team': team.team_name,
+            'player_name': player_name,
+            'card_type': card_type,
+            'minute': minute,
+            'event_type': 'card'
+        }
+        
+        self.match_events.append(card_event)
+        
+        return self.match_events
+    
+    def complete_match(self):
+        """
+        Mark the match as completed and update team statistics.
         
         Returns:
-            float: The GPA, or 0.0 if no courses
+            dict: A dictionary with the match result
+            
+        Raises:
+            ValueError: If the match is already completed
         """
-        # YOUR CODE HERE
-        pass
+        if self.is_completed:
+            raise ValueError("Match already completed")
+        
+        self.is_completed = True
+        
+        # Update home team's stats
+        self.home_team.record_match_result(self.home_goals, self.away_goals)
+        
+        # Update away team's stats
+        self.away_team.record_match_result(self.away_goals, self.home_goals)
+        
+        return {
+            'home_team': self.home_team.team_name,
+            'away_team': self.away_team.team_name,
+            'score': f"{self.home_goals}-{self.away_goals}",
+            'winner': self.home_team.team_name if self.home_goals > self.away_goals else 
+                     (self.away_team.team_name if self.away_goals > self.home_goals else "Draw"),
+            'date': self.match_date,
+            'venue': self.venue
+        }
     
-    def get_courses(self):
+    def __str__(self):
         """
-        Get a list of all courses the student is taking.
+        Return a string representation of the match.
         
         Returns:
-            list: A list of course names
+            str: A formatted string describing the match
         """
-        # YOUR CODE HERE
-        pass
-    
-    def is_passing(self):
-        """
-        Check if the student is passing all courses (grade >= 60).
-        
-        Returns:
-            bool: True if all courses have a grade of 60 or higher, False otherwise
-            If no courses, returns True
-        """
-        # YOUR CODE HERE
-        pass
+        if self.is_completed:
+            result = f"{self.home_team.team_name} {self.home_goals} - {self.away_goals} {self.away_team.team_name}"
+            return f"Match Result: {result} (Played on {self.match_date} at {self.venue})"
+        else:
+            return f"Scheduled Match: {self.home_team.team_name} vs {self.away_team.team_name} on {self.match_date} at {self.venue}"
 
 
 def main():
-    """Test the classes with some examples."""
-    # Test BankAccount
-    print("Testing BankAccount class...")
-    account = BankAccount("12345", "Alice Smith", 1000)
-    account.deposit(500)
-    account.withdraw(200)
-    account.add_interest(0.05)
-    print(f"Account balance: ${account.get_balance():.2f}")
+    """Test the soccer management system with example usage."""
+    print("Testing Soccer Team Management System...")
     
-    # Test Rectangle
-    print("\nTesting Rectangle class...")
-    rect = Rectangle(5, 10)
-    print(f"Rectangle area: {rect.area()}")
-    print(f"Rectangle perimeter: {rect.perimeter()}")
-    print(f"Is square? {rect.is_square()}")
-    square = Rectangle(5, 5)
-    print(f"Square area: {square.area()}")
-    print(f"Is square? {square.is_square()}")
+    # Create teams
+    barcelona = SoccerTeam("FC Barcelona", "Xavi Hernandez", 100000000)
+    real_madrid = SoccerTeam("Real Madrid", "Carlo Ancelotti", 120000000)
     
-    # Test Student
-    print("\nTesting Student class...")
-    student = Student("Bob Johnson", "S12345")
-    student.add_course("Math", 85)
-    student.add_course("History", 92)
-    student.add_course("Science", 78)
-    print(f"Courses: {student.get_courses()}")
-    print(f"GPA: {student.get_gpa():.2f}")
-    print(f"Is passing all courses? {student.is_passing()}")
+    # Test team finances
+    print(f"\n{barcelona.team_name} initial budget: ${barcelona.get_balance():,}")
+    barcelona.spend_funds(25000000)
+    print(f"After transfer spending: ${barcelona.get_balance():,}")
+    barcelona.add_funds(10000000)
+    print(f"After sponsorship deal: ${barcelona.get_balance():,}")
+    
+    # Create a field
+    camp_nou = SoccerField(105, 68, "grass")
+    print(f"\nCamp Nou area: {camp_nou.area()} square meters")
+    print(f"Is regulation size: {camp_nou.is_regulation_size()}")
+    print(f"Initial condition: {camp_nou.condition_rating}/100")
+    print(f"Condition after rain: {camp_nou.update_condition(-15)}/100")
+    
+    # Create a match
+    el_clasico = SoccerMatch(barcelona, real_madrid, "2025-05-22", "Camp Nou")
+    print(f"\n{el_clasico}")
+    
+    # Record match events
+    el_clasico.add_goal(barcelona, "Lewandowski", 23)
+    el_clasico.add_goal(real_madrid, "Mbappé", 45)
+    el_clasico.add_goal(barcelona, "Gavi", 67)
+    el_clasico.add_card(real_madrid, "Rüdiger", "yellow", 70)
+    
+    # Complete the match
+    result = el_clasico.complete_match()
+    print(f"\nMatch completed: {el_clasico}")
+    
+    # Check team stats
+    print(f"\n{barcelona.team_name} stats:")
+    print(f"Matches: {barcelona.matches_played}, Wins: {barcelona.wins}, Draws: {barcelona.draws}, Losses: {barcelona.losses}")
+    print(f"Goals scored: {barcelona.goals_scored}, Goals conceded: {barcelona.goals_conceded}")
+    
+    print(f"\n{real_madrid.team_name} stats:")
+    print(f"Matches: {real_madrid.matches_played}, Wins: {real_madrid.wins}, Draws: {real_madrid.draws}, Losses: {real_madrid.losses}")
+    print(f"Goals scored: {real_madrid.goals_scored}, Goals conceded: {real_madrid.goals_conceded}")
+
 
 if __name__ == "__main__":
     main()
