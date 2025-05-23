@@ -5,6 +5,8 @@ Implements the soccer league class hierarchy according to the specified requirem
 This exercise focuses on inheritance, polymorphism, and method overriding.
 """
 
+import random  # For simulating random events in matches
+
 class Person:
     """
     Base class for all people in the soccer domain.
@@ -434,100 +436,402 @@ class Coach(StaffMember):
         return (self.wins / self.matches) * 100
 
 
+class Team:
+    """
+    Class representing a soccer team.
+    
+    Attributes:
+        name (str): Team name
+        founded_year (int): Year the team was founded
+        players (list): List of Player objects
+        staff (list): List of StaffMember objects
+        
+    Methods:
+        add_player(player): Add a player to the team
+        add_staff(staff_member): Add a staff member to the team
+        get_roster(): Get the full team roster
+        get_starters(): Get the starting 11 players
+        get_team_stats(): Get the team's overall statistics
+    """
+    
+    def __init__(self, name, founded_year):
+        """
+        Initialize a new Team instance.
+        
+        Args:
+            name (str): Team name
+            founded_year (int): Year the team was founded
+        """
+        self.name = name
+        self.founded_year = founded_year
+        self.players = []
+        self.staff = []
+        self.matches_played = 0
+        self.wins = 0
+        self.draws = 0
+        self.losses = 0
+        self.goals_scored = 0
+        self.goals_conceded = 0
+    
+    def add_player(self, player):
+        """
+        Add a player to the team.
+        
+        Args:
+            player (Player): Player to add
+            
+        Returns:
+            int: Number of players in the team
+        """
+        if not isinstance(player, Player):
+            raise TypeError("Can only add Player objects to the team")
+        self.players.append(player)
+        return len(self.players)
+    
+    def add_staff(self, staff_member):
+        """
+        Add a staff member to the team.
+        
+        Args:
+            staff_member (StaffMember): Staff member to add
+            
+        Returns:
+            int: Number of staff members in the team
+        """
+        if not isinstance(staff_member, StaffMember):
+            raise TypeError("Can only add StaffMember objects to the team")
+        self.staff.append(staff_member)
+        return len(self.staff)
+    
+    def get_roster(self):
+        """
+        Get the full team roster.
+        
+        Returns:
+            dict: Dictionary containing all players and staff
+        """
+        # Group players by position
+        position_groups = {}
+        for player in self.players:
+            if player.position not in position_groups:
+                position_groups[player.position] = []
+            position_groups[player.position].append(player)
+        
+        # Group staff by role
+        role_groups = {}
+        for staff in self.staff:
+            if staff.role not in role_groups:
+                role_groups[staff.role] = []
+            role_groups[staff.role].append(staff)
+        
+        return {
+            "team_name": self.name,
+            "founded": self.founded_year,
+            "players_by_position": position_groups,
+            "staff_by_role": role_groups
+        }
+    
+    def get_starters(self, formation="4-3-3"):
+        """
+        Get a potential starting 11 based on a formation.
+        
+        Args:
+            formation (str, optional): Formation to use. Defaults to "4-3-3".
+            
+        Returns:
+            list: List of 11 players (1 GK + 10 field players)
+        """
+        starters = []
+        
+        # Get the best goalkeeper
+        goalkeepers = [p for p in self.players if p.position == "Goalkeeper"]
+        if goalkeepers:
+            starters.append(goalkeepers[0])
+        
+        # Parse the formation
+        parts = formation.split("-")
+        if len(parts) >= 3:
+            defenders_count = int(parts[0])
+            midfielders_count = int(parts[1])
+            forwards_count = int(parts[2])
+            
+            # Get the best defenders
+            defenders = [p for p in self.players if p.position == "Defender"]
+            starters.extend(defenders[:defenders_count])
+            
+            # Get the best midfielders
+            midfielders = [p for p in self.players if p.position == "Midfielder"]
+            starters.extend(midfielders[:midfielders_count])
+            
+            # Get the best forwards
+            forwards = [p for p in self.players if p.position == "Forward"]
+            starters.extend(forwards[:forwards_count])
+        
+        return starters[:11]  # Ensure we return at most 11 players
+    
+    def record_match(self, opponent, goals_scored, goals_conceded):
+        """
+        Record a match result.
+        
+        Args:
+            opponent (str): Name of the opponent team
+            goals_scored (int): Goals scored by this team
+            goals_conceded (int): Goals conceded by this team
+            
+        Returns:
+            dict: Match result info
+        """
+        self.matches_played += 1
+        self.goals_scored += goals_scored
+        self.goals_conceded += goals_conceded
+        
+        result = "draw"
+        if goals_scored > goals_conceded:
+            result = "win"
+            self.wins += 1
+        elif goals_scored < goals_conceded:
+            result = "loss"
+            self.losses += 1
+        else:
+            self.draws += 1
+        
+        # Update coach's record if available
+        coaches = [s for s in self.staff if isinstance(s, Coach)]
+        if coaches:
+            coaches[0].record_match_result(result)
+        
+        return {
+            "opponent": opponent,
+            "result": result,
+            "score": f"{goals_scored}-{goals_conceded}",
+            "match_number": self.matches_played
+        }
+    
+    def get_team_stats(self):
+        """
+        Get the team's overall statistics.
+        
+        Returns:
+            dict: Team statistics
+        """
+        return {
+            "matches_played": self.matches_played,
+            "wins": self.wins,
+            "draws": self.draws,
+            "losses": self.losses,
+            "goals_scored": self.goals_scored,
+            "goals_conceded": self.goals_conceded,
+            "win_rate": (self.wins / self.matches_played * 100) if self.matches_played > 0 else 0,
+            "points": self.wins * 3 + self.draws,
+            "top_scorer": self._get_top_scorer(),
+            "top_assister": self._get_top_assister(),
+            "squad_size": len(self.players)
+        }
+    
+    def _get_top_scorer(self):
+        """Find the player with the most goals."""
+        if not self.players:
+            return None
+        
+        top_scorer = max(self.players, key=lambda p: p.goals)
+        return {
+            "name": top_scorer.full_name(),
+            "goals": top_scorer.goals
+        }
+    
+    def _get_top_assister(self):
+        """Find the player with the most assists."""
+        if not self.players:
+            return None
+        
+        top_assister = max(self.players, key=lambda p: p.assists)
+        return {
+            "name": top_assister.full_name(),
+            "assists": top_assister.assists
+        }
+    
+    def __str__(self):
+        """Return a string representation of the Team."""
+        return f"{self.name} (Founded: {self.founded_year}) - {len(self.players)} players, {len(self.staff)} staff"
+
+
 def create_team_roster():
     """
     Create a sample team roster with different types of players and staff.
     
     Returns:
-        list: Team roster with various Person objects
+        Team: A team object with players and staff
     """
-    roster = []
+    # Create a team
+    team = Team("FC Python United", 2023)
     
     # Add a coach
     coach = Coach("Jürgen", "Klopp", 55, "German", 20, "Gegenpressing")
-    roster.append(coach)
+    team.add_staff(coach)
     
     # Add a goalkeeper
     goalkeeper = Goalkeeper("Alisson", "Becker", 29, "Brazilian", 1)
-    roster.append(goalkeeper)
+    team.add_player(goalkeeper)
     
-    # Add field players
-    defender = FieldPlayer("Virgil", "van Dijk", 31, "Dutch", "Defender", 4)
-    roster.append(defender)
+    # Add field players - Defenders
+    team.add_player(FieldPlayer("Virgil", "van Dijk", 31, "Dutch", "Defender", 4))
+    team.add_player(FieldPlayer("Trent", "Alexander-Arnold", 24, "English", "Defender", 66))
+    team.add_player(FieldPlayer("Andrew", "Robertson", 28, "Scottish", "Defender", 26))
+    team.add_player(FieldPlayer("Joel", "Matip", 30, "Cameroonian", "Defender", 32))
     
-    midfielder = FieldPlayer("Kevin", "De Bruyne", 31, "Belgian", "Midfielder", 17)
-    roster.append(midfielder)
+    # Add field players - Midfielders
+    team.add_player(FieldPlayer("Kevin", "De Bruyne", 31, "Belgian", "Midfielder", 17))
+    team.add_player(FieldPlayer("N'Golo", "Kanté", 31, "French", "Midfielder", 7))
+    team.add_player(FieldPlayer("Bruno", "Fernandes", 28, "Portuguese", "Midfielder", 8))
+    team.add_player(FieldPlayer("Luka", "Modric", 37, "Croatian", "Midfielder", 10))
     
-    forward = FieldPlayer("Harry", "Kane", 29, "English", "Forward", 9)
-    roster.append(forward)
+    # Add field players - Forwards
+    team.add_player(FieldPlayer("Harry", "Kane", 29, "English", "Forward", 9))
+    team.add_player(FieldPlayer("Mohamed", "Salah", 30, "Egyptian", "Forward", 11))
+    team.add_player(FieldPlayer("Kylian", "Mbappé", 24, "French", "Forward", 7))
     
-    # Demonstrate polymorphism
-    print("Team Roster:")
-    for person in roster:
-        print(person)
-        if isinstance(person, Player):
-            person.play_match(90)
-            print(f"  Played a full match. Total matches: {person.matches_played}")
-        if isinstance(person, Coach):
-            person.record_match_result("win")
-            print(f"  Recorded a win. Win percentage: {person.win_percentage():.1f}%")
+    # Add other staff
+    team.add_staff(StaffMember("Carlo", "Pintus", 60, "Italian", "Fitness Coach", 25))
+    team.add_staff(StaffMember("John", "Achterberg", 51, "Dutch", "Goalkeeper Coach", 15))
     
-    return roster
+    return team
 
 
 if __name__ == "__main__":
-    # Create and demonstrate the team roster
-    roster = create_team_roster()
+    # Create a team with players and staff
+    team = create_team_roster()
+    print(f"Created team: {team}")
     
-    # Additional demonstrations
-    print("\nAdditional Player Actions:")
-    for person in roster:
-        if isinstance(person, Goalkeeper):
-            for _ in range(5):
-                person.make_save()
-            person.concede_goal()
-            print(f"{person.full_name()} (GK) - Save percentage: {person.save_percentage():.1f}%")
+    # Display the team roster by position
+    roster = team.get_roster()
+    print("\nTeam Roster by Position:")
+    for position, players in roster["players_by_position"].items():
+        print(f"\n{position}s ({len(players)}):")
+        for player in players:
+            print(f"  - {player}")
+    
+    print("\nStaff by Role:")
+    for role, staff_members in roster["staff_by_role"].items():
+        print(f"\n{role}s ({len(staff_members)}):")
+        for staff in staff_members:
+            print(f"  - {staff}")
+    
+    # Display a starting lineup
+    formation = "4-3-3"
+    starters = team.get_starters(formation)
+    print(f"\nStarting XI ({formation}):")
+    for player in starters:
+        print(f"  - {player}")
+    
+    # Simulate some matches
+    print("\nSimulating Season:")
+    matches = [
+        {"opponent": "FC Barcelona", "goals_for": 3, "goals_against": 1},
+        {"opponent": "Bayern Munich", "goals_for": 2, "goals_against": 2},
+        {"opponent": "Liverpool FC", "goals_for": 0, "goals_against": 2},
+        {"opponent": "Real Madrid", "goals_for": 4, "goals_against": 0},
+        {"opponent": "Manchester City", "goals_for": 2, "goals_against": 1}
+    ]
+    
+    for match in matches:
+        result = team.record_match(match["opponent"], match["goals_for"], match["goals_against"])
+        print(f"  Match {result['match_number']}: {team.name} {result['score']} {result['opponent']} - {result['result'].upper()}")
         
-        elif isinstance(person, FieldPlayer):
-            if person.position == "Defender":
-                for _ in range(8):
-                    person.make_tackle()
-                person.cover_distance(10.5)
-            elif person.position == "Midfielder":
-                for _ in range(60):
-                    person.complete_pass()
-                person.cover_distance(12.3)
-                person.record_assist()
-            elif person.position == "Forward":
-                person.score_goal()
-                person.score_goal()
-                person.cover_distance(9.8)
-            
-            print(f"{person.full_name()} ({person.position}) - Position rating: {person.position_rating():.2f}")
-    
-    print("\nCoach Actions:")
-    for person in roster:
-        if isinstance(person, Coach):
-            # Demonstrate formation change
-            original = person.preferred_formation
-            new = person.set_formation("4-3-3")
-            print(f"{person.full_name()} changed formation from {original} to {new}")
-            
-            # Demonstrate role description
-            print(person.describe_role())
-            
-            # Demonstrate match results and win percentage calculation
-            print(f"Initial win percentage: {person.win_percentage():.1f}%")
-            
-            results = ["win", "win", "draw", "win", "loss"]
-            for result in results:
-                person.record_match_result(result)
+        # Simulate player actions in the match
+        for player in team.players:
+            # Only update stats for starters
+            if player in starters:
+                # All players play a match
+                player.play_match(90)
                 
-            print(f"After {len(results)} more matches:")
-            print(f"Matches: {person.matches}, Wins: {person.wins}, Draws: {person.draws}, Losses: {person.losses}")
-            print(f"Updated win percentage: {person.win_percentage():.1f}%")
-            
-            # Demonstrate experience addition
-            previous_exp = person.years_of_experience
-            person.add_experience(1)
-            print(f"Experience increased from {previous_exp} to {person.years_of_experience} years")
+                # Goalkeepers make saves and might concede goals
+                if isinstance(player, Goalkeeper):
+                    saves = match["goals_against"] + 3  # Arbitrary saves count
+                    for _ in range(saves):
+                        player.make_save()
+                    
+                    for _ in range(match["goals_against"]):
+                        player.concede_goal()
+                    
+                    if match["goals_against"] == 0:
+                        player.record_clean_sheet()
+                
+                # Field players have various actions
+                elif isinstance(player, FieldPlayer):
+                    # All players cover some distance
+                    player.cover_distance(8 + 4 * random.random())  # 8-12 km
+                    
+                    # Position-specific actions
+                    if player.position == "Defender":
+                        tackles = int(3 + 5 * random.random())  # 3-8 tackles
+                        for _ in range(tackles):
+                            player.make_tackle()
+                    
+                    passes = int(20 + 40 * random.random())  # 20-60 passes
+                    for _ in range(passes):
+                        player.complete_pass()
+                    
+                    # Simulate goals and assists
+                    if player.position == "Forward" and random.random() < 0.4:
+                        player.score_goal()
+                    
+                    if (player.position == "Midfielder" or player.position == "Forward") and random.random() < 0.3:
+                        player.record_assist()
+    
+    # Display team stats
+    stats = team.get_team_stats()
+    print("\nSeason Summary:")
+    print(f"  Matches: {stats['matches_played']}")
+    print(f"  Record: {stats['wins']}-{stats['draws']}-{stats['losses']} (W-D-L)")
+    print(f"  Points: {stats['points']} (3 pts for win, 1 pt for draw)")
+    print(f"  Win Rate: {stats['win_rate']:.1f}%")
+    print(f"  Goals: {stats['goals_scored']} scored, {stats['goals_conceded']} conceded")
+    
+    if stats['top_scorer']:
+        print(f"  Top Scorer: {stats['top_scorer']['name']} ({stats['top_scorer']['goals']} goals)")
+    
+    if stats['top_assister']:
+        print(f"  Top Assister: {stats['top_assister']['name']} ({stats['top_assister']['assists']} assists)")
+    
+    # Show player performance metrics
+    print("\nPlayer Performance Metrics:")
+    
+    # Goalkeeper stats
+    for player in team.players:
+        if isinstance(player, Goalkeeper):
+            print(f"\n{player.full_name()} (Goalkeeper):")
+            print(f"  Matches: {player.matches_played}")
+            print(f"  Clean Sheets: {player.clean_sheets}")
+            print(f"  Saves: {player.saves}")
+            print(f"  Goals Conceded: {player.goals_conceded}")
+            print(f"  Save Percentage: {player.save_percentage():.1f}%")
+    
+    # Field player stats by position
+    for position in ["Defender", "Midfielder", "Forward"]:
+        position_players = [p for p in team.players if isinstance(p, FieldPlayer) and p.position == position]
+        
+        if position_players:
+            print(f"\n{position} Stats:")
+            for player in sorted(position_players, key=lambda p: p.position_rating(), reverse=True):
+                print(f"\n  {player.full_name()} (#{player.jersey_number}):")
+                print(f"    Matches: {player.matches_played}")
+                print(f"    Goals: {player.goals}")
+                print(f"    Assists: {player.assists}")
+                
+                if position == "Defender":
+                    print(f"    Tackles: {player.tackles}")
+                
+                print(f"    Passes: {player.passes_completed}")
+                print(f"    Distance: {player.distance_covered:.1f} km")
+                print(f"    Rating: {player.position_rating():.2f}")
+    
+    # Coach performance
+    coaches = [s for s in team.staff if isinstance(s, Coach)]
+    if coaches:
+        coach = coaches[0]
+        print(f"\nCoach Performance - {coach.full_name()}:")
+        print(f"  Formation: {coach.preferred_formation}")
+        print(f"  Style: {coach.coaching_style}")
+        print(f"  Win Rate: {coach.win_percentage():.1f}%")
+        print(f"  Record: {coach.wins}-{coach.draws}-{coach.losses} (W-D-L)")
+        print(f"  Experience: {coach.years_of_experience} years")
