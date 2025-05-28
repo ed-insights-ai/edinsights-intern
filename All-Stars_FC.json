@@ -1,0 +1,100 @@
+{
+  "team_name": "All-Stars FC",
+  "last_updated": "2025-05-23T11:41:22.935248",
+  "team_stats": {
+    "total_players": 3,
+    "total_goals": 18,
+    "total_assists": 21,
+    "total_shots": 80,
+    "total_games": 57,
+    "total_minutes": 5080,
+    "total_yellow_cards": 9,
+    "total_red_cards": 1,
+    "average_efficiency": 70.16,
+    "goals_per_game": 0.32,
+    "assists_per_game": 0.37
+  },
+  "players": [
+    {
+      "player_id": "DII001",
+      "name": "John Smith",
+      "position": "F",
+      "stats": {
+        "games_played": 20,
+        "minutes": 1750,
+        "goals": 12,
+        "assists": 8,
+        "shots": 45,
+        "shots_on_goal": 30,
+        "yellow_cards": 2,
+        "red_cards": 0,
+        "fouls_committed": 15,
+        "fouls_suffered": 25
+      },
+      "metrics": {
+        "efficiency_score": 71.33,
+        "goals_per_90": 0.62,
+        "assists_per_90": 0.41,
+        "shot_accuracy": 66.67,
+        "conversion_rate": 26.67,
+        "goal_contributions": 20,
+        "card_ratio": 0.1,
+        "fouls_ratio": 0.6
+      }
+    },
+    {
+      "player_id": "DII002",
+      "name": "Maria Garcia",
+      "position": "MF",
+      "stats": {
+        "games_played": 18,
+        "minutes": 1620,
+        "goals": 5,
+        "assists": 10,
+        "shots": 25,
+        "shots_on_goal": 15,
+        "yellow_cards": 3,
+        "red_cards": 0,
+        "fouls_committed": 18,
+        "fouls_suffered": 20
+      },
+      "metrics": {
+        "efficiency_score": 89.15,
+        "goals_per_90": 0.28,
+        "assists_per_90": 0.56,
+        "shot_accuracy": 60.0,
+        "conversion_rate": 20.0,
+        "goal_contributions": 15,
+        "card_ratio": 0.17,
+        "fouls_ratio": 0.9
+      }
+    },
+    {
+      "player_id": "DII003",
+      "name": "David Johnson",
+      "position": "D",
+      "stats": {
+        "games_played": 19,
+        "minutes": 1710,
+        "goals": 1,
+        "assists": 3,
+        "shots": 10,
+        "shots_on_goal": 5,
+        "yellow_cards": 4,
+        "red_cards": 1,
+        "fouls_committed": 22,
+        "fouls_suffered": 8
+      },
+      "metrics": {
+        "efficiency_score": 50.0,
+        "goals_per_90": 0.05,
+        "assists_per_90": 0.16,
+        "shot_accuracy": 50.0,
+        "conversion_rate": 10.0,
+        "goal_contributions": 4,
+        "card_ratio": 0.26,
+        "fouls_ratio": 2.75
+      }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+player_id,first_name,last_name,position,team,games_played,minutes,goals,assists,shots,shots_on_goal,yellow_cards,red_cards,fouls_committed,fouls_suffered,efficiency_score,goals_per_90,assists_per_90,shot_accuracy,conversion_rate
+DII001,John,Smith,F,Western State,20,1750,12,8,45,30,2,0,15,25,71.33,0.62,0.41,66.67,26.67
+DII002,Maria,Garcia,MF,Eastern College,18,1620,5,10,25,15,3,0,18,20,89.15,0.28,0.56,60.0,20.0
+DII003,David,Johnson,D,Northern University,19,1710,1,3,10,5,4,1,22,8,50.0,0.05,0.16,50.0,10.0

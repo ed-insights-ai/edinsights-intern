@@ -379,6 +379,301 @@ class Team:
         return max(self.players, key=lambda player: player.efficiency_score())
 
 
+import json
+import csv
+from datetime import datetime
+
+
+class Team:
+    """
+    A class representing a soccer team, composed of multiple SoccerPlayer objects.
+    """
+    
+    def __init__(self, name):
+        """
+        Initialize a new Team instance.
+        
+        Args:
+            name (str): Team name
+        """
+        self.name = name
+        self.players = []
+    
+    def add_player(self, player):
+        """
+        Add a player to the team.
+        
+        Args:
+            player (SoccerPlayer): The player to add
+            
+        Returns:
+            int: The number of players on the team
+            
+        Raises:
+            ValueError: If a player with the same ID already exists
+        """
+        # Check if player with same ID already exists
+        for existing_player in self.players:
+            if existing_player.player_id == player.player_id:
+                raise ValueError(f"Player with ID {player.player_id} already exists on the team")
+        
+        self.players.append(player)
+        return len(self.players)
+    
+    def remove_player(self, player_id):
+        """
+        Remove a player from the team.
+        
+        Args:
+            player_id (str): The ID of the player to remove
+            
+        Returns:
+            SoccerPlayer: The removed player
+            
+        Raises:
+            ValueError: If the player is not found
+        """
+        for i, player in enumerate(self.players):
+            if player.player_id == player_id:
+                return self.players.pop(i)
+        
+        raise ValueError(f"Player with ID {player_id} not found on the team")
+    
+    def get_player(self, player_id):
+        """
+        Get a player by ID.
+        
+        Args:
+            player_id (str): The ID of the player to get
+            
+        Returns:
+            SoccerPlayer: The player with the specified ID, or None if not found
+        """
+        for player in self.players:
+            if player.player_id == player_id:
+                return player
+        return None
+    
+    def team_stats(self):
+        """
+        Calculate team-level statistics.
+        
+        Returns:
+            dict: A dictionary containing team statistics
+        """
+        if not self.players:
+            return {
+                'total_players': 0,
+                'total_goals': 0,
+                'total_assists': 0,
+                'total_shots': 0,
+                'total_games': 0,
+                'average_efficiency': 0
+            }
+        
+        total_goals = sum(player.goals for player in self.players)
+        total_assists = sum(player.assists for player in self.players)
+        total_shots = sum(player.shots for player in self.players)
+        total_games = sum(player.games_played for player in self.players)
+        total_minutes = sum(player.minutes for player in self.players)
+        total_yellow = sum(player.yellow_cards for player in self.players)
+        total_red = sum(player.red_cards for player in self.players)
+        
+        efficiency_scores = [player.efficiency_score() for player in self.players]
+        average_efficiency = sum(efficiency_scores) / len(efficiency_scores)
+        
+        return {
+            'total_players': len(self.players),
+            'total_goals': total_goals,
+            'total_assists': total_assists,
+            'total_shots': total_shots,
+            'total_games': total_games,
+            'total_minutes': total_minutes,
+            'total_yellow_cards': total_yellow,
+            'total_red_cards': total_red,
+            'average_efficiency': round(average_efficiency, 2),
+            'goals_per_game': round(total_goals / total_games, 2) if total_games > 0 else 0,
+            'assists_per_game': round(total_assists / total_games, 2) if total_games > 0 else 0
+        }
+    
+    def best_scorer(self):
+        """
+        Find the player with the most goals.
+        
+        Returns:
+            SoccerPlayer: The player with the most goals, or None if no players
+        """
+        if not self.players:
+            return None
+        
+        return max(self.players, key=lambda player: player.goals)
+    
+    def best_assistant(self):
+        """
+        Find the player with the most assists.
+        
+        Returns:
+            SoccerPlayer: The player with the most assists, or None if no players
+        """
+        if not self.players:
+            return None
+        
+        return max(self.players, key=lambda player: player.assists)
+    
+    def most_efficient_player(self):
+        """
+        Find the player with the highest efficiency score.
+        
+        Returns:
+            SoccerPlayer: The player with the highest efficiency score, or None if no players
+        """
+        if not self.players:
+            return None
+        
+        return max(self.players, key=lambda player: player.efficiency_score())
+    
+    def export_to_csv(self, filename=None):
+        """
+        Export team data to CSV file for analysis.
+        
+        Args:
+            filename (str): Output filename (defaults to team_name_timestamp.csv)
+        """
+        if filename is None:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"{self.name.replace(' ', '_')}_{timestamp}.csv"
+        
+        with open(filename, 'w', newline='') as csvfile:
+            fieldnames = ['player_id', 'first_name', 'last_name', 'position', 'team',
+                         'games_played', 'minutes', 'goals', 'assists', 'shots',
+                         'shots_on_goal', 'yellow_cards', 'red_cards', 
+                         'fouls_committed', 'fouls_suffered', 'efficiency_score',
+                         'goals_per_90', 'assists_per_90', 'shot_accuracy', 'conversion_rate']
+            
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            
+            for player in self.players:
+                writer.writerow({
+                    'player_id': player.player_id,
+                    'first_name': player.first_name,
+                    'last_name': player.last_name,
+                    'position': player.position,
+                    'team': player.team,
+                    'games_played': player.games_played,
+                    'minutes': player.minutes,
+                    'goals': player.goals,
+                    'assists': player.assists,
+                    'shots': player.shots,
+                    'shots_on_goal': player.shots_on_goal,
+                    'yellow_cards': player.yellow_cards,
+                    'red_cards': player.red_cards,
+                    'fouls_committed': player.fouls_committed,
+                    'fouls_suffered': player.fouls_suffered,
+                    'efficiency_score': round(player.efficiency_score(), 2),
+                    'goals_per_90': round(player.goals_per_90(), 2),
+                    'assists_per_90': round(player.assists_per_90(), 2),
+                    'shot_accuracy': round(player.shot_accuracy(), 2),
+                    'conversion_rate': round(player.conversion_rate(), 2)
+                })
+        
+        print(f"Team data exported to {filename}")
+        return filename
+    
+    def import_from_csv(self, filename):
+        """
+        Import team data from CSV file.
+        
+        Args:
+            filename (str): Input CSV filename
+        """
+        self.players = []  # Clear existing players
+        
+        with open(filename, 'r') as csvfile:
+            reader = csv.DictReader(csvfile)
+            
+            for row in reader:
+                # Create player with basic info
+                player = SoccerPlayer(
+                    row['player_id'],
+                    row['first_name'],
+                    row['last_name'],
+                    row['position'],
+                    row['team']
+                )
+                
+                # Update stats from CSV
+                player.update_stats(
+                    games=int(row['games_played']),
+                    minutes=int(row['minutes']),
+                    goals=int(row['goals']),
+                    assists=int(row['assists']),
+                    shots=int(row['shots']),
+                    shots_on_goal=int(row['shots_on_goal']),
+                    yellow_cards=int(row['yellow_cards']),
+                    red_cards=int(row['red_cards']),
+                    fouls_committed=int(row['fouls_committed']),
+                    fouls_suffered=int(row['fouls_suffered'])
+                )
+                
+                self.players.append(player)
+        
+        print(f"Imported {len(self.players)} players from {filename}")
+    
+    def save_to_json(self, filename=None):
+        """
+        Save team data to JSON format for web applications.
+        
+        Args:
+            filename (str): Output filename (defaults to team_name.json)
+        """
+        if filename is None:
+            filename = f"{self.name.replace(' ', '_')}.json"
+        
+        team_data = {
+            'team_name': self.name,
+            'last_updated': datetime.now().isoformat(),
+            'team_stats': self.team_stats(),
+            'players': []
+        }
+        
+        for player in self.players:
+            player_data = {
+                'player_id': player.player_id,
+                'name': player.full_name(),
+                'position': player.position,
+                'stats': {
+                    'games_played': player.games_played,
+                    'minutes': player.minutes,
+                    'goals': player.goals,
+                    'assists': player.assists,
+                    'shots': player.shots,
+                    'shots_on_goal': player.shots_on_goal,
+                    'yellow_cards': player.yellow_cards,
+                    'red_cards': player.red_cards,
+                    'fouls_committed': player.fouls_committed,
+                    'fouls_suffered': player.fouls_suffered
+                },
+                'metrics': {
+                    'efficiency_score': round(player.efficiency_score(), 2),
+                    'goals_per_90': round(player.goals_per_90(), 2),
+                    'assists_per_90': round(player.assists_per_90(), 2),
+                    'shot_accuracy': round(player.shot_accuracy(), 2),
+                    'conversion_rate': round(player.conversion_rate(), 2),
+                    'goal_contributions': player.goal_contributions(),
+                    'card_ratio': round(player.card_ratio(), 2),
+                    'fouls_ratio': round(player.fouls_ratio(), 2)
+                }
+            }
+            team_data['players'].append(player_data)
+        
+        with open(filename, 'w') as jsonfile:
+            json.dump(team_data, jsonfile, indent=2)
+        
+        print(f"Team data saved to {filename}")
+        return filename
+
+
 def main():
     """Test the SoccerPlayer and Team classes with some examples."""
     # Create some players
@@ -428,6 +723,21 @@ def main():
     print("\nBest Scorer:", team.best_scorer().full_name())
     print("Best Assistant:", team.best_assistant().full_name())
     print("Most Efficient Player:", team.most_efficient_player().full_name())
+    
+    # Export data for analysis
+    print("\n--- Data Export Demo ---")
+    csv_file = team.export_to_csv()
+    json_file = team.save_to_json()
+    
+    print(f"\nData exported to:")
+    print(f"- CSV: {csv_file} (for data analysis in pandas, Excel, etc.)")
+    print(f"- JSON: {json_file} (for web applications, APIs)")
+    
+    # Demo importing data
+    print("\n--- Data Import Demo ---")
+    new_team = Team("Imported Team")
+    new_team.import_from_csv(csv_file)
+    print(f"Successfully loaded {len(new_team.players)} players")
 
 if __name__ == "__main__":
     main()
